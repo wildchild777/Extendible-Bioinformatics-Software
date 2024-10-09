@@ -12,3 +12,7 @@ Reading a Research paper that has helped me understand the evolution of protein 
 7th October 
 
 On my way to finish the research paper i was reading on the 5th, went on a tangent of reading 2 more research papers which were informative but not too useful for abstract, hoping to finish abstract tomorrow and start working on timeline and risk mitigations.
+
+9th October 
+
+Finally finished my abstract and got my citations in, going to start working on the timeline and risk mitigations.
