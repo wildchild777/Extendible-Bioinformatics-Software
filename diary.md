@@ -16,3 +16,11 @@ On my way to finish the research paper i was reading on the 5th, went on a tange
 9th October 
 
 Finally finished my abstract and got my citations in, going to start working on the timeline and risk mitigations.
+
+11th Ocotber 
+
+Finished my plan and submitted 
+
+28th October 
+
+Reading through SE books to plan out my code - Hope to have a rough outline by Wednesday to discuss with supervisor on Thursday
