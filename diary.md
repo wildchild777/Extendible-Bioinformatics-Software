@@ -24,3 +24,8 @@ Finished my plan and submitted
 28th October 
 
 Reading through SE books to plan out my code - Hope to have a rough outline by Wednesday to discuss with supervisor on Thursday
+
+11th November
+
+Looked at different biological sets to use and their respective clustering that can be used - going to use gse10072 for the first biological
+dataset - and implement k means clustering on it.
