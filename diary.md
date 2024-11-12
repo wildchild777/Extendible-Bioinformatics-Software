@@ -34,4 +34,4 @@ dataset - and implement k means clustering on it.
 
 Tried to find datasets that i could use - but ended up starting from the ground up and reading a bit of lit before i start my project, there are a lot of things that i dont understand that i hope i can once i am through with the lit - plug in system, datasets for bioinformatics, software engineering principles. 
 
-I started reading building bioinformatics solution to understand how the data is stored and their relevant metadata, this book teaches us how a bioinformatics software is created from scratch - hopefully when i am through with the relevant chappters i can have more confidence.
+I started reading building bioinformatics solution(by conrad bessant et al) to understand how the data is stored and their relevant metadata, this book teaches us how a bioinformatics software is created from scratch - hopefully when i am through with the relevant chappters i can have more confidence.
