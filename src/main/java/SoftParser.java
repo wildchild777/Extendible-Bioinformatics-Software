@@ -10,6 +10,7 @@ import java.util.List;
 
 class parser{
 	private String filename;
+	public parser() {}
 	
 	public parser(String filename) {
 		this.filename= filename; 
@@ -22,7 +23,7 @@ class parser{
 		try {
 		BufferedReader br = new BufferedReader(new FileReader(filename));
 		while((line=br.readLine())!=null) {
-			if(line.startsWith("^")|| line.startsWith("!") ) {
+			if(line.startsWith("^")|| line.startsWith("!") ||line.startsWith("#") ) {
 				continue;//we'll skip the meta data lines.
 			}
 			String[] entries = line.split("\t");//splits the entries that we get, since they are tab delimited.
