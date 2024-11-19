@@ -9,14 +9,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 class parser{
-	private String filename;
-	public parser() {}
+	//private String filename;
+	//public parser() {}
 	
-	public parser(String filename) {
-		this.filename= filename; 
-	}
+	//public parser(String filename) {
+	//	this.filename= filename; 
+	//}
 	//lets try to first print the gene and it's id out 
-	public List<String[]> softparser() throws IOException {
+	public List<String[]> softparser(String filename) throws IOException {
 		String line;//what we use to read the line in.
 		List<String[]> data= new ArrayList<>();// this list stores a gene and it's expression vlaues.
 		
