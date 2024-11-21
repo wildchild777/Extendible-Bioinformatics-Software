@@ -7,6 +7,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Pattern;
 
 class parser{
 	//private String filename;
@@ -18,10 +19,22 @@ class parser{
 	//lets try to first print the gene and it's id out 
 	public List<String[]> softparser(String filename) throws IOException {
 		String line;//what we use to read the line in.
+		String header;
 		List<String[]> data= new ArrayList<>();// this list stores a gene and it's expression vlaues.
 		
 		try {
 		BufferedReader br = new BufferedReader(new FileReader(filename));
+		// We'll try to find the very first row - count the number of samples and then store our expression values until then.
+		//We'll store the metadata later.
+		
+		while((header = br.readLine())!= null) {
+			if(!header.startsWith("^") && !header.startsWith("!") && !header.startsWith("#") ) {
+				break;//we'll skip the meta data lines.
+			}
+			
+			Pattern samplepattern = Pattern.compile("GSM[0-9+");
+				
+		}
 		while((line=br.readLine())!=null) {
 			if(line.startsWith("^")|| line.startsWith("!") ||line.startsWith("#") ) {
 				continue;//we'll skip the meta data lines.
