@@ -39,7 +39,7 @@ class parser{
 			
 		 for (int i = 2; i < columns.length; i++) { // Skip first two columns id ref and gene
 	            if (samplePattern.matcher(columns[i]).matches()) {//gets the total number of gsm samples skipping the first two 
-	                count++;
+	                count++;// this isn't getting incrementaed 
 	            }
 	        }
 		int numberOfSamples = count +2;
@@ -51,14 +51,13 @@ class parser{
 			String[] entries = line.split("\t");//splits the entries that we get, since they are tab delimited.
 			// we have the number of columns we have to parse - numberOfSamples
 			//find a way to get only the number of columns we need
-			int temp = entries.length;
-			for(int i=0;numberOfSamples<temp;i++) {
-				data.add(entries);	
-			}
 			
-			//while((entries.length >=2)) {//checks that the gene has expression data.
-				//data.add(entries);
-			//}	
+			String[] geneData = new String[numberOfSamples];
+		    for (int i = 0; i < numberOfSamples; i++) {
+		        geneData[i] = entries[i]; // Copy only necessary columns
+		    }
+		    data.add(geneData); // Add the parsed row to the data list
+			
 		}
 		br.close();
 		} catch (FileNotFoundException e) {

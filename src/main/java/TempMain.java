@@ -11,8 +11,8 @@ public class TempMain {
 		List<String[]> temp = new ArrayList<>();
 		try {
 			temp = parser.softparser("src/main/resources/GDS4794_full.soft");
-			for (int i = 0; i < 5; i++) {
-                System.out.println(Arrays.toString(temp.get(i)));
+			for (String[] row : temp) {
+                System.out.println(Arrays.toString(row));
             }
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
