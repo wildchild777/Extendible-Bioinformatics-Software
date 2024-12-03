@@ -1,0 +1,35 @@
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+
+public class Centroids {
+ //We'll make the centriod which will basically exist in the same dimensions as all the other vectors(Columns)
+	private final Map<String, List<Double>> coordinates;
+	
+	  public Centroids(Map<String, List<Double>> coordinates) {
+	        this.coordinates = coordinates;
+	    }
+
+	    public Map<String, List<Double>> getCoordinates() {
+	        return coordinates;
+	    }
+	    @Override
+	    public String toString() {
+	        return "Centroid{" +
+	               "coordinates=" + coordinates +
+	               '}';
+	    }
+	    
+	    @Override
+	    public boolean equals(Object o) {
+	        if (this == o) return true;
+	        if (o == null || getClass() != o.getClass()) return false;
+	        Centroids centroid = (Centroids) o;
+	        return Objects.equals(coordinates, centroid.coordinates);
+	    }
+
+	    @Override
+	    public int hashCode() {
+	        return Objects.hash(coordinates);
+	    }
+}
