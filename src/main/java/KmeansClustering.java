@@ -33,6 +33,13 @@ public class KmeansClustering {
 			
 			//generate these centroids and return
 			
+			//first lets store the entry object
+			Map<String, List<Double>> currentSample = entry.getSample();
+			
+			//now lets get the list of double 
+			List<Double> currentExpressionValues = currentSample.getValues();
+			
+			
 			
 			
 		}
