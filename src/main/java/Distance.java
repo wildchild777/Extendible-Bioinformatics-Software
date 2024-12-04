@@ -12,5 +12,5 @@ public interface Distance {
  * @param vector2 This will be the second vector (another sample in the database)
  * @return
  */
-	double calculate(Map<String,List<Double>>vector1,Map<String,List<Double>>vector2);
+	double calculate(Map<String,Double>vector1,Map<String,Double>vector2);
 }
