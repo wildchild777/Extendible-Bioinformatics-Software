@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -13,32 +14,34 @@ public class KmeansClustering {
 	
 	
 	private static List<Centroids> randomCentroids(List<Entry> dataset, int k){
+		
 		List<Centroids> centriods = new ArrayList<>();
 		
-		Map<String, List<Double>> mins = new HashMap<>();
-		Map<String, List<Double>> maxs = new HashMap<>();
+		Map<String, Double> mins = new HashMap<>();//a gene and it's minimum values
+		Map<String, Double> maxs = new HashMap<>();//a gene and it's maximum values
 		
-		for(Entry entry : dataset) {
-			// this will give us an entry object from the list of entry objects
-			// that contain mapping from String -> List<Double> - sample and their gene expression 
+		
+			// this will give us an entry object from the list of entry objects - which will be a GSM sample
+			// that contain mapping from String -> Double - gene and their gene expression for a particular Entry (GSM sample)
 			
-			//our goal is to get max and min numbers from the rnage of gene expressions 
-			// create centroids within this range so they converge faster
+			//our goal is to get max and min numbers from the range of gene expressions from each GSM sample
+			//create centroids within this range so they converge faster
 			
-			//so go over an entry get the values -> get max min -> generate random values for our list<double> which will be 
-			// our mapping for cluster -> this list 
+			//so go over an entry(GSM sample) get the values -> get max min for a gene ->
+			//generate random values for that gene -> give these to a centroid.
 			
-			// so go over entry object - which will contain a list of entry objects, (string->list<double>)
-			// get the string -> get values - set min max -> iterate over all the entires 
+			// so go over entry object - which will contain a list of entry objects, (string(gene)->ldouble(expression value))
+			// get the string -> get values - set min max -> iterate over all the entires.
 			
 			//generate these centroids and return
 			
+		for(Entry entry : dataset) {
 			//first lets store the entry object
-			Map<String, List<Double>> currentSample = entry.getSample();
+			Map<String, Double> currentGene = entry.getGene();
 			
-			//now lets get the list of double 
-			List<Double> currentExpressionValues = currentSample.getValues();
-			
+			//now lets get the lists of double - get min max 
+			// generate a centroid with the gene names - random expression values between min and max for the gene
+			// return the list of centorids 
 			
 			
 			

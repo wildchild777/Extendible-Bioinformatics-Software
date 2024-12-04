@@ -29,7 +29,7 @@ public class Entry {
 		return name;
 	}
 	
-	public Map<String,Double> getSample(){
+	public Map<String,Double> getGene(){
 		return sample;
 	}
 	
