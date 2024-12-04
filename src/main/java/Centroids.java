@@ -4,13 +4,13 @@ import java.util.Objects;
 
 public class Centroids {
  //We'll make the centriod which will basically exist in the same dimensions as all the other vectors(Columns)
-	private final Map<String, List<Double>> coordinates;
+	private final Map<String, Double> coordinates;
 	
-	  public Centroids(Map<String, List<Double>> coordinates) {
+	  public Centroids(Map<String, Double> coordinates) {
 	        this.coordinates = coordinates;
 	    }
 
-	    public Map<String, List<Double>> getCoordinates() {
+	    public Map<String, Double> getCoordinates() {
 	        return coordinates;
 	    }
 	    @Override
