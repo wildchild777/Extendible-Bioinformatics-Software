@@ -16,12 +16,13 @@ class parser{
 	//public parser(String filename) {
 	//	this.filename= filename; 
 	//}
-	//lets try to first print the gene and it's id out 
+	private String line;//what we use to read the line in.
+	private String header;//to get the first line in.
+	private int count =0;
+	private List<String[]> data= new ArrayList<>();// this list stores a gene and it's expression vlaues.
+	
 	public List<String[]> softparser(String filename) throws IOException {
-		String line;//what we use to read the line in.
-		String header;//to get the first line in.
-		int count =0;
-		List<String[]> data= new ArrayList<>();// this list stores a gene and it's expression vlaues.
+		//lets try to first print the gene and it's id out 
 		
 		try {
 		BufferedReader br = new BufferedReader(new FileReader(filename));

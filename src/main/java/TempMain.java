@@ -11,6 +11,7 @@ public class TempMain {
 		List<String[]> temp = new ArrayList<>();
 		try {
 			temp = parser.softparser("src/main/resources/GDS4794_full.soft");
+			
 			for (String[] row : temp) {
                 System.out.println(Arrays.toString(row));
             }
