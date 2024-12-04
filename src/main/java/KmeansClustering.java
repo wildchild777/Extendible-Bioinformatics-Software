@@ -15,8 +15,33 @@ public class KmeansClustering {
 	private static List<Centroids> randomCentroids(List<Entry> dataset, int k){
 		List<Centroids> centriods = new ArrayList<>();
 		
-		Map<Integer, Double> maxs = new HashMap<>();
-		Map<Integer, Double> mins = new HashMap<>();
+		Map<String, List<Double>> mins = new HashMap<>();
+		Map<String, List<Double>> maxs = new HashMap<>();
+		
+		for(Entry entry : dataset) {
+			// this will give us an entry object from the list of entry objects
+			// that contain mapping from String -> List<Double> - sample and their gene expression 
+			
+			//our goal is to get max and min numbers from the rnage of gene expressions 
+			// create centroids within this range so they converge faster
+			
+			//so go over an entry get the values -> get max min -> generate random values for our list<double> which will be 
+			// our mapping for cluster -> this list 
+			
+			// so go over entry object - which will contain a list of entry objects, (string->list<double>)
+			// get the string -> get values - set min max -> iterate over all the entires 
+			
+			//generate these centroids and return
+			
+			
+			
+		}
+		
+		
+		
+		
+		
+		
 		
 		for(Entry entry : dataset) {
 			Map<String,List<Double>> expressionValues = entry.getSample();// gets a single instance of Entry object
