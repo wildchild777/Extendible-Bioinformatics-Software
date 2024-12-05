@@ -83,6 +83,24 @@ public class KmeansClustering {
 	}
 	
 	
+	private static Centroids nearestCentroid(Entry entry, List<Centroids> centroids, Distance distance) {
+		
+		double minimum_distance = Double.MAX_VALUE;// going to find the minimum distance between a sample and all the centroids
+		Centroids nearest = null;
+		
+		for(Centroids centroid : centroids) {// for all the centroids we have
+			double current_distance = distance.calculate(entry.getGene(), centroid.getCoordinates());//finds the current distance between the sample and centroids
+			
+			if(current_distance < minimum_distance) {
+				minimum_distance = current_distance;
+				nearest = centroid;
+			}	
+		}
+		
+		return nearest;
+	}
+	
+	
 	/**
 	 * 
 	 * @param entry the class we use for our gene expression that we parse
