@@ -99,7 +99,21 @@ public class KmeansClustering {
 		
 		return nearest;
 	}
+
 	
+	private static void assignToCluster(Map<Centroids, List<Entry>> clusters, Entry entry, Centroids centroid) {
+		
+		if(clusters.containsKey(centroid)) {//check to see if we have anything assigned to this cluster - if yes
+			List<Entry> entries = clusters.get(centroid);//gets the mapping of entry
+			entries.add(entry);//adds to it 
+			clusters.put(centroid, entries);//updates the list 
+		}else{// if it doesn't exist
+			List<Entry> newEntries = new ArrayList<>();//creates a new list for entry
+			newEntries.add(entry);//adds to it 
+			clusters.put(centroid, newEntries);//updates the main list for the clusters
+		}
+		
+	}
 	
 	/**
 	 * 
