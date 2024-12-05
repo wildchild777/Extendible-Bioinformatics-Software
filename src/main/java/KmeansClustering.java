@@ -30,16 +30,40 @@ public class KmeansClustering {
 			//so go over an entry(GSM sample) get the values -> get max min for a gene ->
 			//generate random values for that gene -> give these to a centroid.
 			
-			// so go over entry object - which will contain a list of entry objects, (string(gene)->ldouble(expression value))
+			// so go over entry object - which will contain a list of entry objects, (string(gene)->double(expression value))
 			// get the string -> get values - set min max -> iterate over all the entires.
 			
 			//generate these centroids and return
 			
 		for(Entry entry : dataset) {
-			//first lets store the entry object
-			Map<String, Double> currentGene = entry.getGene();
 			
-			//now lets get the lists of double - get min max 
+			//first lets store the entry object
+			Map<String, Double> currentGene = entry.getGene();// this stores a sample with it's list of gene -> exp
+			
+			
+			for(String temp : currentGene.keySet()) {//goes through all the genes one at a time 
+				
+				double expression = currentGene.get(temp);//gets the genes expression value
+				
+				if(maxs.get(temp)==null) {// if it doesn't exist 
+					maxs.put(temp, expression);//create an entry
+				}
+				
+				// if we get here that means that we do have a value in the maxs hashmap	
+				else if(maxs.get(temp)<expression) {//if the expression currently held in the hasmap is less than the expression then we update
+						maxs.put(temp, expression);
+					}
+				
+				if(mins.get(temp)==null) {// if it doesn't exist 
+					maxs.put(temp, expression);//create an entry
+				}
+				
+				// if we get here that means that we do have a value in the mins hashmap
+				else if(mins.get(temp)>expression) {//if the expression currently held in the hasmap is more than the expression then we update
+						maxs.put(temp, expression);	
+				}
+			}
+			
 			// generate a centroid with the gene names - random expression values between min and max for the gene
 			// return the list of centorids 
 			
