@@ -15,7 +15,7 @@ public class KmeansClustering {
 	
 	private static List<Centroids> randomCentroids(List<Entry> dataset, int k){
 		
-		List<Centroids> centriods = new ArrayList<>();
+		List<Centroids> centroids = new ArrayList<>();
 		
 		Map<String, Double> mins = new HashMap<>();//a gene and it's minimum values
 		Map<String, Double> maxs = new HashMap<>();//a gene and it's maximum values
@@ -60,48 +60,26 @@ public class KmeansClustering {
 				
 				// if we get here that means that we do have a value in the mins hashmap
 				else if(mins.get(temp)>expression) {//if the expression currently held in the hasmap is more than the expression then we update
-						maxs.put(temp, expression);	
+						mins.put(temp, expression);	
 				}
-			}
-			
-			// generate a centroid with the gene names - random expression values between min and max for the gene
-			// return the list of centorids 
-			
-			
-			
+				
+			}	
 		}
 		
-		
-		
-		
-		
-		
-		
-		for(Entry entry : dataset) {
-			Map<String,List<Double>> expressionValues = entry.getSample();// gets a single instance of Entry object
-			
-			for(List<Double> geneValues : expressionValues.values()) {//gets the List<Double> of the all gene expressions
-				for(int i =0; i < geneValues.size();i++) {// goes over all the gene values in the list 
-					double value = geneValues.get(i);
-					
-					//update the max 
-					maxs.put(i, Math.max(maxs.getOrDefault(i, Double.MIN_VALUE), value));
+		//Now we have finished populating the lists of maxs and mins 
+		//now we can generate a centroid with gene names and expression values - we want it to be between the max and min for every gene
 
-	                // Update minimum values
-	                mins.put(i, Math.min(mins.getOrDefault(i, Double.MAX_VALUE), value));
-				}
+		for(int i =0; i<k;i++) {// for the number of centroids
+			Map<String, Double> coordinates= new HashMap<>();
+			for(String temp : maxs.keySet()){// can use min as well since we just need the keyset which should be the same
+				//get max and min number from each map
+				Double current_max = maxs.get(temp);
+				Double current_min= mins.get(temp);	
+				coordinates.put(temp, random.nextDouble() * (current_max - current_min) + current_min);
 			}
-			
-		}
-		
-		//Now we will work on generating the Centriods
-		
-		for (int i=0; i<k;i++) {
-			
-		}
-		
-		
-		return null;
+			centroids.add(new Centroids(coordinates));
+		}	
+		return centroids;
 	}
 	
 	
