@@ -115,6 +115,21 @@ public class KmeansClustering {
 		
 	}
 	
+	private static Centroids average(Centroids centroid, List<Entry> entry) {
+		
+		//if records are empty then just return the centorid 
+		if(entry == null || entry.isEmpty()) {
+			return centroid;
+		}
+		
+		//get the entries of the centroid
+		Map<String, Double> average= centroid.getCoordinates();
+		
+		
+	}
+	
+	
+	
 	/**
 	 * 
 	 * @param entry the class we use for our gene expression that we parse
