@@ -12,7 +12,12 @@ public class KmeansClustering {
 	//a random seed to make the rnadom positions for the centriods
 	private static final Random random = new Random();
 	
-	
+	/**
+	 * This generates a list of random centroids in the same plane as our dataset.
+	 * @param dataset our dataset - i.e list of entires
+	 * @param k the number of centroids we want to generate 
+	 * @return a list of random centroids in the same plane as our dataset.
+	 */
 	private static List<Centroids> randomCentroids(List<Entry> dataset, int k){
 		
 		List<Centroids> centroids = new ArrayList<>();
@@ -82,7 +87,13 @@ public class KmeansClustering {
 		return centroids;
 	}
 	
-	
+	/**
+	 * This is used to find the nearest centroid for a given entry
+	 * @param entry entry we are trying to find the nearest centroid to 
+	 * @param centroids our list of centroids 
+	 * @param distance the type of distance we are using (eg, eucledian etc)
+	 * @return the nearest centroid to our entry
+	 */
 	private static Centroids nearestCentroid(Entry entry, List<Centroids> centroids, Distance distance) {
 		
 		double minimum_distance = Double.MAX_VALUE;// going to find the minimum distance between a sample and all the centroids
@@ -100,7 +111,12 @@ public class KmeansClustering {
 		return nearest;
 	}
 
-	
+	/**
+	 * This is used to update the clusters 
+	 * @param clusters the list of clusters (centroid and it's list of entry)
+	 * @param entry an individual entry that we want to check against or add to the list
+	 * @param centroid an individual centroid that we want to check against or add to the list
+	 */
 	private static void assignToCluster(Map<Centroids, List<Entry>> clusters, Entry entry, Centroids centroid) {
 		
 		if(clusters.containsKey(centroid)) {//check to see if we have anything assigned to this cluster - if yes
@@ -114,7 +130,13 @@ public class KmeansClustering {
 		}
 		
 	}
-	
+	/**
+	 * This is used to find the average values for every gene in the given list of entry samples, and then update our centroid 
+	 * with these values.
+	 * @param centroid a centroid 
+	 * @param entry and it's list of assigned samples(it's cluster)
+	 * @return
+	 */
 	private static Centroids average(Centroids centroid, List<Entry> entry) {
 		
 		//if records are empty then just return the centorid 
@@ -158,7 +180,11 @@ public class KmeansClustering {
 		//centroid
 		return new Centroids(average);
 	}
-	
+	/**
+	 * This is used to move our centroids to the centre of the cluster
+	 * @param clusters mapping from a centroid to it's assigned cluster of samples
+	 * @return updated list of centroids with new coordinates 
+	 */
 	private static List<Centroids> relocateCentroids(Map<Centroids, List<Entry>> clusters) {
 	    List<Centroids> newCentroids = new ArrayList<>();
 	    
