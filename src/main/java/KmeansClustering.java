@@ -159,7 +159,23 @@ public class KmeansClustering {
 		return new Centroids(average);
 	}
 	
-	
+	private static List<Centroids> relocateCentroids(Map<Centroids, List<Entry>> clusters) {
+	    List<Centroids> newCentroids = new ArrayList<>();
+	    
+	    // Iterate through each entry in the clusters map
+	    for (Map.Entry<Centroids, List<Entry>> entry : clusters.entrySet()) {
+	        Centroids currentCentroid = entry.getKey();//this will give us the centroid
+	        List<Entry> entries = entry.getValue();// and it's assigned samples
+	        
+	        // Calculate the new centroid by averaging the assigned records
+	        Centroids relocatedCentroid = average(currentCentroid, entries);//calculate the average for a centroid for it relocation and entries 
+	        
+	        // Add the new centroid to the list
+	        newCentroids.add(relocatedCentroid);
+	    }
+	    
+	    return newCentroids;
+	}
 	
 	/**
 	 * 
