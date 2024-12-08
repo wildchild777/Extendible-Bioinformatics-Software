@@ -1,7 +1,9 @@
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-
+/**
+ * This represents our centroids , which have gene and it's expressions for each sample.
+ */
 public class Centroids {
  //We'll make the centriod which will basically exist in the same dimensions as all the other vectors(Columns)
 	private final Map<String, Double> coordinates;

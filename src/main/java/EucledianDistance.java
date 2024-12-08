@@ -1,6 +1,8 @@
 import java.util.List;
 import java.util.Map;
-
+/**
+ * This is used to calculate the eucledian distance between two points.(implements distance)
+ */
 public class EucledianDistance implements Distance{
 	
 	@Override
