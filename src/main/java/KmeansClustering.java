@@ -125,6 +125,14 @@ public class KmeansClustering {
 		//get the entries of the centroid
 		Map<String, Double> average= centroid.getCoordinates();
 		
+		for(Entry entries : entry) {
+			for(String key : entries.getGene().keySet()) {
+				if(!average.containsKey(key)) {
+					average.put(key,0.0);
+				}
+			}
+		}
+		
 		
 	}
 	
