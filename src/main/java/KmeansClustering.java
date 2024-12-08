@@ -124,7 +124,8 @@ public class KmeansClustering {
 		
 		//get the entries of the centroid
 		Map<String, Double> average= centroid.getCoordinates();
-		
+		//this goes through the list and updates all the keys to be 0 this helps to do a redundancy check and make sure all 
+		//values are 0
 		for(Entry entries : entry) {
 			for(String key : entries.getGene().keySet()) {
 				if(!average.containsKey(key)) {
@@ -132,8 +133,30 @@ public class KmeansClustering {
 				}
 			}
 		}
+		//this goes through the list of entry that we get passed
+		//get's the entry for a particular gene and adds it to our average Map.
+		for (Entry entries : entry) {
+			Map<String,Double> temp = entries.getGene();
+			for (Map.Entry<String, Double> features : temp.entrySet()) {
+	            String key = features.getKey();
+	            Double value = features.getValue();
+	            if (average.containsKey(key)) {
+	                average.put(key, average.get(key) + value);//this will just put the value in 
+	            } else {
+	                average.put(key, value);
+	            }
+	        }
+		}
 		
-		
+		//this averages out all the entries for a particular gene from all the samples that we get.
+		for (Map.Entry<String, Double> entries : average.entrySet()) {
+	        String key = entries.getKey();
+	        Double totalValue = entries.getValue();
+	        average.put(key, totalValue / entry.size());
+	    }
+		//returns the new averaged out map that contains our average entry from all the samples that is assigned to our 
+		//centroid
+		return new Centroids(average);
 	}
 	
 	
