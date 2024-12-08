@@ -186,6 +186,29 @@ public class KmeansClustering {
 	 * @return returns a mapping of a centroid with the list of entries(our column vectors) that have been clustered together
 	 */
 	public static Map<Centroids, List<Entry>>fit (List<Entry> entry, int k, Distance distance, int maxIterations){
-		return null;
+		List<Centroids> centroids = randomCentroids(entry,k);
+		Map<Centroids, List<Entry>> clusters = new HashMap<>();
+		Map<Centroids, List<Entry>> lastState= new HashMap<>();
+			
+		//go over the loop for the number of maxIterations we have 
+		for(int i =0;i < maxIterations; i++) {
+			boolean isLastIteration = (i == maxIterations-1);
+			
+			//for each loop we find a nearest centoid for all the records we have 
+			for (Entry entries : entry) {
+				Centroids centroid = nearestCentroid(entries, centroids, distance);
+				assignToCluster(clusters, entries,centroid);
+			}
+			
+			//if the coordinates dont change we terminate our loop
+			boolean end = isLastIteration || clusters.equals(lastState);
+			lastState=  clusters;
+			if(end) {break;}
+			
+			//now if we have reached this far we chnage the coordinates and start again 
+			centroids = relocateCentroids(clusters);
+			clusters = new HashMap<>();
+		}
+		return lastState;
 	}
 }
