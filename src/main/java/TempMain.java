@@ -8,12 +8,12 @@ import java.util.List;
 public class TempMain {
 	public static void main(String args[]) {
 		parser parser = new parser();
-		List<String[]> temp = new ArrayList<>();
+		List<Entry> temp = new ArrayList<>();
 		try {
-			temp = parser.softparser("src/main/resources/GDS4794_full.soft");
+			temp = parser.softparser("src/main/resources/GDS3310_full.soft");
 			
-			for (String[] row : temp) {
-                System.out.println(Arrays.toString(row));
+			for (Entry row : temp) {
+                System.out.println(row);
             }
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
@@ -23,3 +23,4 @@ public class TempMain {
 		
 	}
 }
+
