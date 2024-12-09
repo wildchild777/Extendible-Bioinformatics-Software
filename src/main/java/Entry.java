@@ -33,4 +33,17 @@ public class Entry {
 		return sample;
 	}
 	
+	@Override
+	public String toString() {
+	    StringBuilder sb = new StringBuilder();
+	    sb.append("Sample Name: ").append(name).append("\n");
+	    sb.append("Gene Expression Data:\n");
+	    for (Map.Entry<String, Double> gene : sample.entrySet()) {
+	        sb.append("  Gene: ").append(gene.getKey())
+	          .append(" - Expression Value: ").append(gene.getValue()).append("\n");
+	    }
+	    return sb.toString();
+	}
+	
+	
 }
