@@ -30,13 +30,13 @@ class parser{
 		 String[] columns= header.split("\t");//splits the entries that we get, since they are tab delimited.
 		
 		 for(String temp : columns) {
-			 if(temp.startsWith("GSM")) {count++;}
+			 if(temp.startsWith("GSM")) {count++;}//only has the column names with the GSM samples
 		 }
-		int numberOfSamples = count +2;//takes in first and second column
+		int numberOfSamples = count +2;//takes in first and second column - for ID_prope and gene name
 		
 		Map<Integer, String> header_info= new HashMap<>();
-		for(int i =2; i<numberOfSamples;i++) {
-			header_info.put(i, columns[i]);//this works
+		for(int i =2; i<numberOfSamples;i++) {//this is to get only the gsm sample names
+			header_info.put(i-2, columns[i]);//this works
 		}
 		//now we have the int -> header spec
 		//we want to have a gene -> expression for all of these header values
@@ -46,8 +46,8 @@ class parser{
 		//iterate through that hashmap put column number 1()gene name -> the expression value.
 		// and then go to the next line 
 		 
-		List<Map<String, Double>> sampleData = new ArrayList<>(count);
-         for (int i = 0; i <=count; i++) {//we dont need to since count has skipped alreday
+		List<Map<String, Double>> sampleData = new ArrayList<>(count);//for the number of gsm samples 
+         for (int i = 0; i <count; i++) {//we dont need to since count has skipped alreday
              sampleData.add(new HashMap<>());
          }//this creates gsm number of hashmap for us 
          
@@ -68,9 +68,9 @@ class parser{
 		//then loop through the entries array 
 		//put entries(1)[gene name] and 
 		
-		int max = Collections.max(header_info.keySet());//gets the largest value for the key 
+		int max = Collections.max(header_info.keySet());//has mapping from int -> gsm sample, and we need the int for the largest one
 		
-		for(int i=0; i<max;i++){//go through all the GSM samples
+		for(int i=0; i<count;i++){//go through all the GSM samples
 			String GSMsample = header_info.get(i);
 			Map<String,Double> geneData = sampleData.get(i);
 			entries.add(new Entry(GSMsample,geneData));

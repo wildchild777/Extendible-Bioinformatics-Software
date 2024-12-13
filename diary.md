@@ -38,4 +38,40 @@ I started reading building bioinformatics solution(by conrad bessant et al) to u
 
 15th-18th 
 
-Reading on lit and working on the parser
+Reading on lit, the design pattern help understand what i could implement and working on the parser for a soft file since its one of the harder files to parse, this will give me a good grasp for future file parsing.
+
+19th november 
+
+Worked on the SoftParser class so it can parse SOFT data files - in progress
+
+2nd decemeber 
+
+Finished SoftParser class, now it can successfully parse a SOFT file, was working on a bug 21-24 which caused the parser to take in unnecessary lines.
+
+3rd december 
+
+Worked on making suplementary classes for my K means clustering, we can turn our parser output into it's respective classes so it can be encapsulated well, this will help for our code to be cleaner and more useable. 
+
+Worked on eucledian distance - i am using the eucledian because the implementation is pretty straightforward.
+
+Worked on centroid representation for our k means - so our clusters can be in the same dimension and converge faster
+
+4th december 
+
+Our softparser was giving out a very complicated data structure which didn't align well with good perormance and optamization, started working on refactoring that.
+
+Worked on centroid generation, and added SE elements into code for better SE practise(Strategy)
+
+5th december 
+
+Worked on K means more - for random centroid generation
+
+6th-8th decemebr 
+
+Finished working on K means - assign, average and the other methods
+
+9th-11th 
+
+refactoring SoftPArser for a more apropriate data structure.
+
+

@@ -9,9 +9,14 @@ public class TempMain {
 	public static void main(String args[]) {
 		parser parser = new parser();
 		List<Entry> temp = new ArrayList<>();
+		EucledianDistance length = new EucledianDistance();
+		
+		
+		
 		try {
-			temp = parser.softparser("src/main/resources/GDS3310_full.soft");
+			temp = parser.softparser("src/main/resources/TestFile.soft");
 			
+			KmeansClustering.fit(temp,3,length,3);
 			for (Entry row : temp) {
                 System.out.println(row);
             }

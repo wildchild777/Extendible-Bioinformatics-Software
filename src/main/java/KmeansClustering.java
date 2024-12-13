@@ -60,7 +60,7 @@ public class KmeansClustering {
 					}
 				
 				if(mins.get(temp)==null) {// if it doesn't exist 
-					maxs.put(temp, expression);//create an entry
+					mins.put(temp, expression);//create an entry
 				}
 				
 				// if we get here that means that we do have a value in the mins hashmap
