@@ -1,0 +1,306 @@
+version 1 
+@startuml
+' this is our parser strategy since we have to change on runtime it is good to use strategy class 
+interface ParserStrategy {
+    +parse(filename: String): ParsedData
+}
+' concrete implementation of a strategy
+class SoftParser {
+    +parse(filename: String): ParsedData
+}
+
+' context class that holds a refrence to the strategy class and delegates work to it 
+' returns 
+class ParserContext {
+    -strategy: ParserStrategy
+    +setParser(strategy: ParserStrategy)
+    +executeParse(filename: String): ParsedData
+}
+
+ParserStrategy <|.. SoftParser
+ParserContext --> ParserStrategy : uses
+
+
+interface ParsedData {
+    +getSampleNames(): List<String>
+    +getGeneExpressions(): Map<String, List<Double>>
+}
+
+ParserContext --> "1" ParsedData : returns
+
+
+SoftParser --> ParsedData : returns
+@enduml
+
+===========
+
+version 2 
+@startuml
+' this is our parser strategy since we have to change on runtime it is good to use strategy class 
+interface ParserStrategy {
+    +parse(filename: String): ParsedData
+}
+
+' concrete implementation of a strategy
+class SoftParser {
+    +parse(filename: String): ParsedData
+}
+
+' context class that holds a reference to the strategy class and delegates work to it 
+' returns 
+class ParserContext {
+    -strategy: ParserStrategy
+    +setParser(strategy: ParserStrategy)
+    +executeParse(filename: String): ParsedData
+}
+
+ParserStrategy <|.. SoftParser
+ParserContext --> ParserStrategy : uses
+
+interface ParsedData {
+    +getEntries(): List<Entry>
+}
+
+' Concrete implementation of ParsedData
+class GeneExpressionParsedData {
+    -entries: List<Entry>
+    +getEntries(): List<Entry>
+}
+GeneExpressionParsedData -|> ParsedData : implements
+
+' Entry class stores sample name and gene expression data
+class Entry {
+    -name: String
+    -sample: Map<String, Double>
+    +getName(): String
+    +getGene(): Map<String, Double>
+}
+
+ParserContext --> "1" ParsedData : returns
+SoftParser --> ParsedData : returns
+GeneExpressionParsedData --> Entry : contains
+
+@endum
+==========
+
+
+version 3
+
+@startuml
+' Parser Strategy Pattern
+interface ParserStrategy {
+    +parse(filename: String): ParsedData
+}
+
+class SoftParser {
+    +parse(filename: String): ParsedData
+}
+
+class ParserContext {
+    -strategy: ParserStrategy
+    +setParser(strategy: ParserStrategy)
+    +executeParse(filename: String): ParsedData
+}
+
+ParserStrategy <|.. SoftParser
+ParserContext --> ParserStrategy : uses
+
+interface ParsedData {
+    +getEntries(): List<Entry>
+}
+
+class GeneExpressionParsedData {
+    -entries: List<Entry>
+    +getEntries(): List<Entry>
+}
+
+GeneExpressionParsedData -|> ParsedData : implements
+
+class Entry {
+    -name: String
+    -sample: Map<String, Double>
+    +getName(): String
+    +getGene(): Map<String, Double>
+}
+
+ParserContext --> "1" ParsedData : returns
+SoftParser --> ParsedData : returns
+GeneExpressionParsedData --> Entry : contains
+
+' Clustering Strategy Pattern
+interface ClusterStrategy {
+    +fit(data: ParsedData): ClusteredData
+}
+
+class KMeansClustering {
+    +fit(data: ParsedData): ClusteredData
+    -centroids: List<Centroids>
+}
+
+ClusterStrategy <|.. KMeansClustering
+
+' Clustering Context Class
+class ClusterContext {
+    -strategy: ClusterStrategy
+    +setClusterStrategy(strategy: ClusterStrategy)
+    +executeClustering(data: ParsedData): ClusteredData
+}
+
+ClusterContext --> ClusterStrategy : uses
+
+' Centroid class used in clustering
+class Centroids {
+    -coordinates: Map<String, Double>
+    +getCoordinates(): Map<String, Double>
+}
+
+KMeansClustering --> Centroids : uses
+
+' Distance Calculation Interface
+interface Distance {
+    +calculate(p1: Map<String, Double>, p2: Map<String, Double>): double
+}
+
+class EuclideanDistance {
+    +calculate(p1: Map<String, Double>, p2: Map<String, Double>): double
+}
+
+Distance <|.. EuclideanDistance
+KMeansClustering --> Distance : uses
+
+' Clustered Data (Output of clustering)
+interface ClusteredData {
+}
+ClusterContext --> ParsedData : uses
+KMeansClustering --> ClusteredData : returns
+ClusterContext --> ClusteredData : returns
+
+
+
+@enduml
+
+
+version 4 
+@startuml
+
+note "havent'coded" as HC
+note as thoughts 
+should i say this uses entry
+    we need to convert Entry into a type of ParsedData or something 
+    since it retuns entries and parsers are supposed to return parsedData
+end note
+
+' Parser Strategy Pattern
+interface ParserStrategy {
+    +parse(filename: String): ParsedData
+}
+ParserStrategy .. HC
+class SoftParser {
+    -line:String
+-header:String
+-count:Int
+-data:List<String[]>
+-entries:List<Entry>
+    +parse(filename: String): ParsedData
+}
+SoftParser  .. thoughts
+
+class ParserContext {
+    -strategy: ParserStrategy
+    +setParser(strategy: ParserStrategy)
+    +executeParse(filename: String): ParsedData
+}
+ParserContext .. HC
+
+ParserStrategy <|.. SoftParser
+ParserContext --> ParserStrategy : uses
+
+interface ParsedData {
+    +getEntries(): List<Entry>
+}
+ParsedData  .. HC
+
+
+class GeneExpressionParsedData {
+    -entries: List<Entry>
+    +getEntries(): List<Entry>
+}
+GeneExpressionParsedData .. HC
+
+GeneExpressionParsedData -|> ParsedData : implements
+
+class Entry {
+    -name: String 
+    -sample: Map<String, Double>
++Entry(name:String,sample:Map<String,Double>)
+    +getName(): String
+    +getGene(): Map<String, Double>
++toString():String
+}
+note bottom of Entry : need to change to parsedData
+
+
+ParserContext --> "1" ParsedData : returns
+SoftParser --> ParsedData : returns
+GeneExpressionParsedData --> Entry : contains
+
+' Clustering Strategy Pattern
+interface ClusterStrategy {
+    +fit(data: ParsedData): ClusteredData
+}
+ClusterStrategy .. HC 
+
+class KMeansClustering {
+-random:Random
+-{static} randomCentroids( dataset : List<Entry>, k: int ) : List<Centroids>
+-{static} nearestCentroid(entry : Entry , centroids: List<Centroids> , distance : Distance): List<Centroids>
+-{static} assignToCluster( clusters: Map<Centroids, List<Entry>>, entry : Entry, centroid : Centroids) 
+-{static} average(centroid : Centroids , entry : List<Entry>) : Centroids
+-{static} relocateCentroids(clusters : Map<Centroids, List<Entry>>) : List<Centroids> 
+-{static} average(centroid : Centroids , entry : List<Entry>) : Centroids
+-{static} fit ( entry: List<Entry> ,k : int distance : Distance , maxIterations : int ) : Map<Centroids, List<Entry>>
+}
+
+ClusterStrategy <|.. KMeansClustering
+
+' Clustering Context Class
+class ClusterContext {
+    -strategy: ClusterStrategy
+    +setClusterStrategy(strategy: ClusterStrategy)
+    +executeClustering(data: ParsedData): ClusteredData
+}
+ClusterContext .. HC
+
+ClusterContext --> ClusterStrategy : uses
+
+' Centroid class used in clustering
+class Centroids {
+    -coordinates: Map<String, Double>
+    +getCoordinates(): Map<String, Double>
+    +Centroids(coordinates: Map<String, Double>)
+}
+
+KMeansClustering --> Centroids : uses
+
+' Distance Calculation Interface
+interface Distance {
+    +calculate(vector1: Map<String, Double>, vector2: Map<String, Double>): double
+}
+
+class EuclideanDistance {
+    +calculate(p1: Map<String, Double>, p2: Map<String, Double>): double
+}
+
+Distance <|.. EuclideanDistance
+KMeansClustering --> Distance : uses
+
+' Clustered Data (Output of clustering)
+interface ClusteredData {
+}
+ClusterContext --> ParsedData : uses
+KMeansClustering --> ClusteredData : returns
+ClusterContext --> ClusteredData : returns
+ClusteredData .. HC
+
+
+@enduml
