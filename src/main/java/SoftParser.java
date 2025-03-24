@@ -20,6 +20,8 @@ class SoftParser implements ParserStrategy{
 	private List<Entry> entries = new ArrayList<>();
 	
 	public List<Entry> parse(String filename) {
+		
+		if(!filename.endsWith(".soft")) {throw new IllegalArgumentException("Invalid file type: Expected a .soft file");}
 		try {
 		BufferedReader br = new BufferedReader(new FileReader(filename));
 		while((header = br.readLine())!= null) {
@@ -96,10 +98,11 @@ class SoftParser implements ParserStrategy{
 		
 		br.close();
 		} catch (FileNotFoundException e) {
-		// TODO Auto-generated catch block
+		System.out.println("File not found" + filename);
 		e.printStackTrace();
-	}catch( IOException f) {
-		f.printStackTrace();
+	}catch( IOException e) {
+		System.out.println("Something went wrong");
+		e.printStackTrace();
 	}
 	return entries;
 	}
