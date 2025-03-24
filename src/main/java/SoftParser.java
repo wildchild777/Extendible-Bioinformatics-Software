@@ -12,14 +12,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.regex.Pattern;
 
-class parser{
+class SoftParser implements ParserStrategy{
 	private String line;//what we use to read the line in.
 	private String header;//to get the first line in.
 	private int count =0;
 	private List<String[]> data= new ArrayList<>();// this list stores a gene and it's expression vlaues.
 	private List<Entry> entries = new ArrayList<>();
 	
-	public List<Entry> softparser(String filename) throws IOException {
+	public List<Entry> parse(String filename) {
 		try {
 		BufferedReader br = new BufferedReader(new FileReader(filename));
 		while((header = br.readLine())!= null) {
@@ -98,6 +98,8 @@ class parser{
 		} catch (FileNotFoundException e) {
 		// TODO Auto-generated catch block
 		e.printStackTrace();
+	}catch( IOException f) {
+		f.printStackTrace();
 	}
 	return entries;
 	}
