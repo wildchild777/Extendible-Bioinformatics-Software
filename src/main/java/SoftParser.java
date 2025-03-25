@@ -17,10 +17,10 @@ class SoftParser implements ParserStrategy{
 	private String header;//to get the first line in.
 	private int count =0;
 	private List<String[]> data= new ArrayList<>();// this list stores a gene and it's expression vlaues.
-	private List<Entry> entries = new ArrayList<>();
+	private List<Entry> entries = new ArrayList<>();//possibly change it here - so that we make a list of ent
 	
 	public List<Entry> parse(String filename) {
-		
+		 
 		if(!filename.endsWith(".soft")) {throw new IllegalArgumentException("Invalid file type: Expected a .soft file");}
 		try {
 		BufferedReader br = new BufferedReader(new FileReader(filename));
