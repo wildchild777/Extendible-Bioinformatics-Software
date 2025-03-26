@@ -189,7 +189,7 @@ public class KmeansClustering {
 	    List<Centroids> newCentroids = new ArrayList<>();
 	    
 	    // Iterate through each entry in the clusters map
-	    for (Map.Entry<Centroids, List<Entry>> entry : clusters.entrySet()) {
+	    for (Map.Entry<Centroids, List<Entry>> entry : clusters.entrySet()) {//this represents one key value pair 
 	        Centroids currentCentroid = entry.getKey();//this will give us the centroid
 	        List<Entry> entries = entry.getValue();// and it's assigned samples
 	        
