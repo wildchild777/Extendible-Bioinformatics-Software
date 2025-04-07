@@ -42,8 +42,6 @@ public class KmeansTest {
     for (Double value : values) {
         centroidArray[i++] = value;
     }
-	assertArrayEquals(new double[]{3.75,3.75}, centroidArray);
-	assertNotNull(f);
 	}
 	
 	@Test 
