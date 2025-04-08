@@ -8,7 +8,7 @@ import java.util.Random;
 /**
  * This class performs our main clustering on the gene data, it had a method which runs fit and in the end returns the clusters 
  */
-public class KmeansClustering {
+public class KmeansClustering implements CusterStrategy {
 	//a random seed to make the rnadom positions for the centriods
 	private static final Random random = new Random();
 	
@@ -18,7 +18,7 @@ public class KmeansClustering {
 	 * @param k the number of centroids we want to generate 
 	 * @return a list of random centroids in the same plane as our dataset.
 	 */
-	private static List<Centroids> randomCentroids(List<Entry> dataset, int k){
+	private List<Centroids> randomCentroids(List<Entry> dataset, int k){
 		
 		List<Centroids> centroids = new ArrayList<>();
 		
@@ -94,7 +94,7 @@ public class KmeansClustering {
 	 * @param distance the type of distance we are using (eg, eucledian etc)
 	 * @return the nearest centroid to our entry
 	 */
-	private static Centroids nearestCentroid(Entry entry, List<Centroids> centroids, Distance distance) {
+	private Centroids nearestCentroid(Entry entry, List<Centroids> centroids, Distance distance) {
 		
 		double minimum_distance = Double.MAX_VALUE;// going to find the minimum distance between a sample and all the centroids
 		Centroids nearest = null;
@@ -117,7 +117,7 @@ public class KmeansClustering {
 	 * @param entry an individual entry that we want to check against or add to the list
 	 * @param centroid an individual centroid that we want to check against or add to the list
 	 */
-	private static void assignToCluster(Map<Centroids, List<Entry>> clusters, Entry entry, Centroids centroid) {
+	private  void assignToCluster(Map<Centroids, List<Entry>> clusters, Entry entry, Centroids centroid) {
 		
 		if(clusters.containsKey(centroid)) {//check to see if we have anything assigned to this cluster - if yes
 			List<Entry> entries = clusters.get(centroid);//gets the mapping of entry
@@ -137,7 +137,7 @@ public class KmeansClustering {
 	 * @param entry and it's list of assigned samples(it's cluster)
 	 * @return
 	 */
-	private static Centroids average(Centroids centroid, List<Entry> entry) {
+	private Centroids average(Centroids centroid, List<Entry> entry) {
 		
 		//if records are empty then just return the centorid 
 		if(entry == null || entry.isEmpty()) {
@@ -185,7 +185,7 @@ public class KmeansClustering {
 	 * @param clusters mapping from a centroid to it's assigned cluster of samples
 	 * @return updated list of centroids with new coordinates 
 	 */
-	private static List<Centroids> relocateCentroids(Map<Centroids, List<Entry>> clusters) {
+	private  List<Centroids> relocateCentroids(Map<Centroids, List<Entry>> clusters) {
 	    List<Centroids> newCentroids = new ArrayList<>();
 	    
 	    // Iterate through each entry in the clusters map
@@ -211,7 +211,8 @@ public class KmeansClustering {
 	 * @param maxIterations the number of time we want the fit to run 
 	 * @return returns a mapping of a centroid with the list of entries(our column vectors) that have been clustered together
 	 */
-	public static Map<Centroids, List<Entry>>fit (List<Entry> entry, int k, Distance distance, int maxIterations){
+	@Override
+	public Map<Centroids, List<Entry>>fit (List<Entry> entry, int k, Distance distance, int maxIterations){
 		List<Centroids> centroids = randomCentroids(entry,k);
 		Map<Centroids, List<Entry>> clusters = new HashMap<>();
 		Map<Centroids, List<Entry>> lastState= new HashMap<>();
