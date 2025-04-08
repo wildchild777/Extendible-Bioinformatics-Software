@@ -19,7 +19,7 @@ public class KmeansTest {
 		temp = parser.parse("src/main/resources/ParseTestFile.soft");
 		EucledianDistance length = new EucledianDistance();
 		Map<Centroids, List<Entry>> f = new HashMap<Centroids, List<Entry>>();
-		f = KmeansClustering.fit(temp, 3, length, 3);
+		f.fit(temp, 3, length, 3);
 		assertNotNull(f);
 	}
 	@Test
