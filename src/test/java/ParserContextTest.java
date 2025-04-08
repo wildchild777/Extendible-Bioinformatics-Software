@@ -1,0 +1,28 @@
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import org.junit.jupiter.api.Test;
+
+public class ParserContextTest {
+
+	@Test
+	public void Setup() {
+		ParserContext context = new ParserContext();
+		List<Entry> holder = new ArrayList<Entry>();
+		context.setParser(new SoftParser());
+		holder = context.executeParse("src/main/resources/ParseTestFile.soft");
+		assertNotNull(holder);
+		System.out.println(holder);
+	}
+	@Test
+	public void throw_exception() {
+		ParserContext context = new ParserContext();
+		assertThrows(IllegalStateException.class, () -> context.executeParse(null));
+		
+	}
+	
+	
+}
