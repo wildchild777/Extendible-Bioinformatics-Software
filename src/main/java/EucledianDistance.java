@@ -23,7 +23,7 @@ public class EucledianDistance implements Distance{
 		
 		for(String key : vector1.keySet()) {
 			double v1 = vector1.get(key);
-			double v2 = vector1.get(key);
+			double v2 = vector2.get(key);
 			sum += Math.pow(v1-v2, 2);
 		}
 
