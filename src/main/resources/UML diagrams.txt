@@ -320,7 +320,7 @@ end note
 interface ParserStrategy {
     +parse(filename: String): ParsedData
 }
-ParserStrategy .. HC
+
 class SoftParser {
     -line:String
 -header:String
@@ -336,7 +336,6 @@ class ParserContext {
     +setParser(strategy: ParserStrategy)
     +executeParse(filename: String): ParsedData
 }
-ParserContext .. HC
 
 ParserStrategy <|.. SoftParser
 ParserContext --> ParserStrategy : uses
@@ -374,10 +373,11 @@ SoftParser --> ParsedData : returns
 GeneExpressionParsedData --> Entry : contains
 
 ' Clustering Strategy Pattern
+
 interface ClusterStrategy {
     +fit(data: ParsedData): ClusteredData
 }
-ClusterStrategy .. HC 
+
 
 class KMeansClustering {
 -random:Random
@@ -398,7 +398,7 @@ class ClusterContext {
     +setClusterStrategy(strategy: ClusterStrategy)
     +executeClustering(data: ParsedData): ClusteredData
 }
-ClusterContext .. HC
+
 
 ClusterContext --> ClusterStrategy : uses
 
@@ -429,7 +429,156 @@ interface ClusteredData {
 ClusterContext --> ParsedData : uses
 KMeansClustering --> ClusteredData : returns
 ClusterContext --> ClusteredData : returns
-ClusteredData .. HC
 
+
+@enduml
+
+
+"""""""""""""""
+version 6 with MVC
+
+@startuml
+
+rectangle "Model" {
+    ' Parser Strategy Pattern
+    interface ParserStrategy {
+        +parse(filename: String): ParsedData
+    }
+
+    class SoftParser {
+        -line: String
+        -header: String
+        -count: Int
+        -data: List<String[]>
+        -entries: List<Entry>
+        +parse(filename: String): ParsedData
+    }
+
+    class ParserContext {
+        -strategy: ParserStrategy
+        +setParser(strategy: ParserStrategy)
+        +executeParse(filename: String): ParsedData
+    }
+
+    ParserStrategy <|.. SoftParser
+    ParserContext --> ParserStrategy : uses
+
+    interface ParsedData {
+        +getEntries(): List<Entry>
+    }
+
+    class GeneExpressionParsedData {
+        -entry: List<Entry>
+        +getEntries(): List<Entry>
+        +addEntry(temp : Entry)
+        +getName() : List<String>
+        +getGene() : List<Map<String,Double>>
+        +getSpecificGene(sampleName : String) : Map<String,Double>
+    }
+
+    GeneExpressionParsedData -|> ParsedData : implements
+
+    class Entry {
+        -name: String 
+        -sample: Map<String, Double>
+        +Entry(name:String,sample:Map<String,Double>)
+        +getName(): String
+        +getGene(): Map<String, Double>
+        +toString():String
+    }
+
+    ParserContext --> "1" ParsedData : returns
+    SoftParser --> ParsedData : returns
+    GeneExpressionParsedData --> Entry : contains
+
+    ' Clustering Strategy Pattern
+    interface ClusterStrategy {
+        +fit(data: ParsedData): ClusteredData
+    }
+
+    class KMeansClustering {
+        -random:Random
+        -{static} randomCentroids(dataset: List<Entry>, k: int): List<Centroids>
+        -{static} nearestCentroid(entry: Entry, centroids: List<Centroids>, distance: Distance): List<Centroids>
+        -{static} assignToCluster(clusters: Map<Centroids, List<Entry>>, entry: Entry, centroid: Centroids)
+        -{static} relocateCentroids(clusters: Map<Centroids, List<Entry>>): List<Centroids>
+        -{static} average(centroid: Centroids, entry: List<Entry>): Centroids
+        +fit(entry: List<Entry>, k: int, distance: Distance, maxIterations: int): Map<Centroids, List<Entry>>
+    }
+
+    ClusterStrategy <|.. KMeansClustering
+
+    class ClusterContext {
+        -strategy: ClusterStrategy
+        -observers: List<Observer>
+        -clusteredData: ClusteredData
+        +setClusterStrategy(strategy: ClusterStrategy)
+        +executeClustering(data: ParsedData): ClusteredData
+        +addObserver(o: Observer)
+        +removeObserver(o: Observer)
+        +notifyObservers()
+    }
+
+    ClusterContext --> ClusterStrategy : uses
+
+    class Centroids {
+        -coordinates: Map<String, Double>
+        +getCoordinates(): Map<String, Double>
+        +Centroids(coordinates: Map<String, Double>)
+    }
+
+    KMeansClustering --> Centroids : uses
+
+    interface Distance {
+        +calculate(vector1: Map<String, Double>, vector2: Map<String, Double>): double
+    }
+
+    class EuclideanDistance {
+        +calculate(p1: Map<String, Double>, p2: Map<String, Double>): double
+    }
+
+    Distance <|.. EuclideanDistance
+    KMeansClustering --> Distance : uses
+
+    interface ClusteredData {}
+    ClusterContext --> ParsedData : uses
+    KMeansClustering --> ClusteredData : returns
+    ClusterContext --> ClusteredData : returns
+}
+
+rectangle "Controller" {
+    class ClusteringController {
+        -parserContext: ParserContext
+        -clusterContext: ClusterContext
+        -view: VisualizationView
+        +loadData(filename: String)
+        +runClustering(k: int, distance: Distance, maxIterations: int)
+        +updateView()
+    }
+
+    ClusteringController --> ParserContext : uses
+    ClusteringController --> ClusterContext : uses
+    ClusteringController --> VisualizationView : updates
+}
+
+rectangle "View" {
+    interface Observer {
+        +update(data: ClusteredData)
+    }
+
+    interface VisualizationView {
+        +displayClusters(data: ClusteredData)
+    }
+
+    class ScatterPlotView {
+        +displayClusters(data: ClusteredData)
+        +update(data: ClusteredData)
+    }
+
+    VisualizationView <|.. ScatterPlotView
+    Observer <|.. ScatterPlotView
+    ClusterContext --> Observer : notifies
+    ClusteringController --> VisualizationView : manages
+}
 
 @enduml
