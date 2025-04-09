@@ -11,7 +11,7 @@ import org.junit.jupiter.api.Test;
 
 
 public class KmeansTest {
-
+	
 	@Test
 	void Entry_class_return() {
 		SoftParser parser = new SoftParser();
@@ -19,7 +19,8 @@ public class KmeansTest {
 		temp = parser.parse("src/main/resources/ParseTestFile.soft");
 		EucledianDistance length = new EucledianDistance();
 		Map<Centroids, List<Entry>> f = new HashMap<Centroids, List<Entry>>();
-		f.fit(temp, 3, length, 3);
+		KmeansClustering cluster = new KmeansClustering();
+		f = cluster.fit(temp, 3, length, 3);
 		assertNotNull(f);
 	}
 	@Test
@@ -28,10 +29,10 @@ public class KmeansTest {
 	List<Entry> temp = new ArrayList<Entry>();
 	temp = parser.parse("src/main/resources/KmeansTemp.soft");
 	EucledianDistance length = new EucledianDistance();
-	
+	KmeansClustering cluster = new KmeansClustering();
 	Map<Centroids, List<Entry>> f = new HashMap<Centroids, List<Entry>>();
 	
-	f = KmeansClustering.fit(temp, 3, length, 3);
+	f = cluster.fit(temp, 3, length, 3);
 	
 	Centroids centroid = f.keySet().iterator().next(); // Get the first centroid
     Map<String, Double> centroidMap = centroid.getCoordinates(); // Get the map
@@ -52,11 +53,37 @@ public class KmeansTest {
 		EucledianDistance length = new EucledianDistance();
 		
 		Map<Centroids, List<Entry>> f = new HashMap<Centroids, List<Entry>>();
-		
+		KmeansClustering cluster = new KmeansClustering();
 		
 		for (int i = 0; i < 15; i++) { // Run 5 times to see where centroids converge
-		    Map<Centroids, List<Entry>> result = KmeansClustering.fit(temp, 3, length, 3);
+		    Map<Centroids, List<Entry>> result = cluster.fit(temp, 3, length, 3);
 		    System.out.println("Run " + (i + 1) + " centroids: " + result.keySet());
 		}
 	}
+	
+	@Test 
+	void simple_sort() {
+		  List<Entry> testEntries = new ArrayList<>();
+		    testEntries.add(new Entry("Sample1", Map.of("Gene1", 1.0, "Gene2", 2.0, "Gene3", 3.0)));
+		    testEntries.add(new Entry("Sample2", Map.of("Gene1", 1.1, "Gene2", 2.1, "Gene3", 3.1)));
+		    testEntries.add(new Entry("Sample3", Map.of("Gene1", 9.0, "Gene2", 9.5, "Gene3", 10.0)));
+		    testEntries.add(new Entry("Sample4", Map.of("Gene1", 9.2, "Gene2", 9.6, "Gene3", 10.2)));
+		    
+		    int k = 2;
+		    int maxIterations = 100;
+		    EucledianDistance length = new EucledianDistance();
+		    KmeansClustering clustering = new KmeansClustering();
+		    Map<Centroids, List<Entry>> clusters = clustering.fit(testEntries, k, length, maxIterations);
+
+		    for (Map.Entry<Centroids, List<Entry>> cluster : clusters.entrySet()) {
+		        System.out.println("Centroid: " + cluster.getKey());
+		        for (Entry e : cluster.getValue()) {
+		            System.out.println("  Sample: " + e.getName() + " Data: " + e.getGene());
+		        }
+		    }
+	
+	
+	}
+	
+	
 }
