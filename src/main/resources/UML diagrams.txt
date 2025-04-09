@@ -439,7 +439,41 @@ version 6 with MVC
 
 @startuml
 
-rectangle "Model" {
+' Force layout with positioning
+
+rectangle "View" as V {
+    interface Observer {
+        +update(data: ClusteredData)
+    }
+
+    interface VisualizationView {
+        +displayClusters(data: ClusteredData)
+    }
+
+    class ScatterPlotView {
+        +displayClusters(data: ClusteredData)
+        +update(data: ClusteredData)
+    }
+
+    VisualizationView <|.. ScatterPlotView
+    Observer <|.. ScatterPlotView
+    
+}
+
+rectangle "Controller" as C {
+    class ClusteringController {
+        -parserContext: ParserContext
+        -clusterContext: ClusterContext
+        -view: VisualizationView
+        +loadData(filename: String)
+        +runClustering(k: int, distance: Distance, maxIterations: int)
+        +updateView()
+    }
+    ClusteringController --> VisualizationView : manages
+}
+
+
+rectangle "Model" as M {
     ' Parser Strategy Pattern
     interface ParserStrategy {
         +parse(filename: String): ParsedData
@@ -544,41 +578,12 @@ rectangle "Model" {
     ClusterContext --> ParsedData : uses
     KMeansClustering --> ClusteredData : returns
     ClusterContext --> ClusteredData : returns
-}
-
-rectangle "Controller" {
-    class ClusteringController {
-        -parserContext: ParserContext
-        -clusterContext: ClusterContext
-        -view: VisualizationView
-        +loadData(filename: String)
-        +runClustering(k: int, distance: Distance, maxIterations: int)
-        +updateView()
-    }
-
     ClusteringController --> ParserContext : uses
     ClusteringController --> ClusterContext : uses
     ClusteringController --> VisualizationView : updates
-}
-
-rectangle "View" {
-    interface Observer {
-        +update(data: ClusteredData)
-    }
-
-    interface VisualizationView {
-        +displayClusters(data: ClusteredData)
-    }
-
-    class ScatterPlotView {
-        +displayClusters(data: ClusteredData)
-        +update(data: ClusteredData)
-    }
-
-    VisualizationView <|.. ScatterPlotView
-    Observer <|.. ScatterPlotView
     ClusterContext --> Observer : notifies
-    ClusteringController --> VisualizationView : manages
 }
-
+' Positioning
+V -left[#hidden]-> M
+C -left[#hidden]-> M
 @enduml
