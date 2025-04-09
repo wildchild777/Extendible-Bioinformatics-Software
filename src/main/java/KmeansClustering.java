@@ -8,7 +8,7 @@ import java.util.Random;
 /**
  * This class performs our main clustering on the gene data, it had a method which runs fit and in the end returns the clusters 
  */
-public class KmeansClustering implements CusterStrategy {
+public class KmeansClustering implements ClusterStrategy {
 	//a random seed to make the rnadom positions for the centriods
 	private static final Random random = new Random();
 	
@@ -145,13 +145,14 @@ public class KmeansClustering implements CusterStrategy {
 		}
 		
 		//get the entries of the centroid
-		Map<String, Double> average= centroid.getCoordinates();
+		 Map<String, Double> newAverage = new HashMap<>();
+		//Map<String, Double> average= centroid.getCoordinates();
 		//this goes through the list and updates all the keys to be 0 this helps to do a redundancy check and make sure all 
 		//values are 0
 		for(Entry entries : entry) {
 			for(String key : entries.getGene().keySet()) {
-				if(!average.containsKey(key)) {
-					average.put(key,0.0);
+				if(!newAverage.containsKey(key)) {
+					newAverage.put(key,0.0);
 				}
 			}
 		}
@@ -162,23 +163,23 @@ public class KmeansClustering implements CusterStrategy {
 			for (Map.Entry<String, Double> features : temp.entrySet()) {
 	            String key = features.getKey();
 	            Double value = features.getValue();
-	            if (average.containsKey(key)) {
-	                average.put(key, average.get(key) + value);//this will just put the value in 
+	            if (newAverage.containsKey(key)) {
+	            	newAverage.put(key, newAverage.get(key) + value);//this will just put the value in 
 	            } else {
-	                average.put(key, value);
+	            	newAverage.put(key, value);
 	            }
 	        }
 		}
 		
 		//this averages out all the entries for a particular gene from all the samples that we get.
-		for (Map.Entry<String, Double> entries : average.entrySet()) {
+		for (Map.Entry<String, Double> entries : newAverage.entrySet()) {
 	        String key = entries.getKey();
 	        Double totalValue = entries.getValue();
-	        average.put(key, totalValue / entry.size());
+	        newAverage.put(key, totalValue / entry.size());
 	    }
 		//returns the new averaged out map that contains our average entry from all the samples that is assigned to our 
 		//centroid
-		return new Centroids(average);
+		return new Centroids(newAverage);
 	}
 	/**
 	 * This is used to move our centroids to the centre of the cluster
@@ -211,6 +212,7 @@ public class KmeansClustering implements CusterStrategy {
 	 * @param maxIterations the number of time we want the fit to run 
 	 * @return returns a mapping of a centroid with the list of entries(our column vectors) that have been clustered together
 	 */
+	//need to change this so it returns a CusterdData
 	@Override
 	public Map<Centroids, List<Entry>>fit (List<Entry> entry, int k, Distance distance, int maxIterations){
 		List<Centroids> centroids = randomCentroids(entry,k);
