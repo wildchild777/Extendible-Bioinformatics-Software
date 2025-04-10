@@ -2,6 +2,7 @@
 
 import java.io.IOException;
 
+import controller.WelcomeViewController;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -14,7 +15,12 @@ public class TempMain extends Application {
     @Override
     public void start(Stage primaryStage) {
 	try {
-			Parent root = FXMLLoader.load(getClass().getResource("/WelcomeView.fxml"));
+			FXMLLoader loader = FXMLLoader.load(getClass().getResource("/WelcomeView.fxml"));
+			Parent root = loader.load();
+			
+			WelcomeViewController controller = loader.getController();
+			controller.setStage(primaryStage);
+			
 			Scene scene = new Scene(root, 800, 600); // Width x Height
 	        primaryStage.setTitle("Clustering App");
 	        primaryStage.setScene(scene);
