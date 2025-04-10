@@ -215,7 +215,7 @@ public class KmeansClustering implements ClusterStrategy {
 	 */
 	//need to change this so it returns a CusterdData
 	@Override
-	public Map<Centroids, List<Entry>>fit (ParsedData data, int k, Distance distance, int maxIterations){
+	public FlatClusteredData fit (ParsedData data, int k, Distance distance, int maxIterations){
 		List<Entry> entry = data.getEntries();
 		List<Centroids> centroids = randomCentroids(entry,k);
 		Map<Centroids, List<Entry>> clusters = new HashMap<>();
@@ -240,6 +240,6 @@ public class KmeansClustering implements ClusterStrategy {
 			centroids = relocateCentroids(clusters);
 			clusters = new HashMap<>();
 		}
-		return lastState;
+		return new FlatClusteredData(lastState);
 	}
 }

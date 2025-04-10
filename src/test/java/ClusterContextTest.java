@@ -6,14 +6,7 @@ import java.util.Map;
 
 import org.junit.jupiter.api.Test;
 
-import model.Centroids;
-import model.ClusterContext;
-import model.Entry;
-import model.EucledianDistance;
-import model.KmeansClustering;
-import model.ParsedData;
-import model.ParserContext;
-import model.SoftParser;
+import model.*;
 
 public class ClusterContextTest {
 
@@ -23,7 +16,6 @@ public class ClusterContextTest {
 	@Test
 	public void Setup() {
 		ParserContext context = new ParserContext();
-		//ParsedData holder = new ArrayList<Entry>();
 		context.setParser(new SoftParser());
 		ParsedData holder = context.executeParse("src/main/resources/KmeansTemp.soft");
 		assertNotNull(holder);
@@ -31,9 +23,10 @@ public class ClusterContextTest {
 		EucledianDistance length = new EucledianDistance();
 		ClusterContext cluster_context = new ClusterContext();
 		cluster_context.setClusterStrategy(new KmeansClustering());
-		Map<Centroids, List<Entry>> result = cluster_context.executeClustering(holder,3,length,3);
-		//System.out.println( "centroids: " + result.keySet());
-		for (Map.Entry<Centroids, List<Entry>> entry : result.entrySet()) {
+		ClusteredData result = cluster_context.executeClustering(holder,3,length,3);
+		assertNotNull(result);
+		Map<Centroids, List<Entry>> clusters = ((FlatClusteredData) result).getClusters();
+		for (Map.Entry<Centroids, List<Entry>> entry : clusters.entrySet()) {
 		    Centroids centroid = entry.getKey();  // Get the centroid
 		    List<Entry> entries = entry.getValue(); // Get the associated list of entries
 
@@ -42,3 +35,4 @@ public class ClusterContextTest {
 		}
 	}
 }
+ 
