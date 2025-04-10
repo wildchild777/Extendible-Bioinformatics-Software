@@ -15,7 +15,7 @@ public class TempMain extends Application {
     @Override
     public void start(Stage primaryStage) {
 	try {
-			FXMLLoader loader = FXMLLoader.load(getClass().getResource("/WelcomeView.fxml"));
+			FXMLLoader loader = new FXMLLoader(getClass().getResource("/WelcomeView.fxml"));
 			Parent root = loader.load();
 			
 			WelcomeViewController controller = loader.getController();
