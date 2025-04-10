@@ -6,6 +6,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.stage.Stage;
 
@@ -19,9 +20,9 @@ public class WelcomeViewController {
 	public void setStage(Stage stage) {
         this.stage = stage;
     }
-	void changeView(ActionEvent e) {
+	public void changeView(ActionEvent e) {
 		 try {
-			 FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/ChoiceView.fxml"));
+			 FXMLLoader loader = new FXMLLoader(getClass().getResource("/ChoiceView.fxml"));
 			 Parent root = loader.load();
 			 ChoiceViewController controller = loader.getController();
 	         controller.setStage(stage); // 🔁 pass it forward
