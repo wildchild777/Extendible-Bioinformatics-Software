@@ -7,6 +7,9 @@ import java.util.Map;
 
 import org.junit.jupiter.api.Test;
 
+import model.Entry;
+import model.SoftParser;
+
 class SoftParserTest {
 
 	@Test

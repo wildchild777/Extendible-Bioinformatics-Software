@@ -6,6 +6,10 @@ import java.util.List;
 
 import org.junit.jupiter.api.Test;
 
+import model.Entry;
+import model.ParserContext;
+import model.SoftParser;
+
 public class ParserContextTest {
 
 	@Test

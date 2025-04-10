@@ -1,3 +1,4 @@
+package model;
 import java.util.List;
 
 /** This is an interface that applies the Strategy design pattern for our parsing needs.

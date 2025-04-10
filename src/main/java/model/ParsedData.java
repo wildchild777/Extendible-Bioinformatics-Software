@@ -1,3 +1,4 @@
+package model;
 
 /**
  * This interface defines datatype that can be returned from a parse.

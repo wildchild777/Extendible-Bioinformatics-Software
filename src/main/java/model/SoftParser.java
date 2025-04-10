@@ -1,5 +1,6 @@
-
 //Since a lot of gene expresion data is in Soft format - which is delimited by tabs i want to read and then store them in an array.
+package model;
+
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
@@ -12,7 +13,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.regex.Pattern;
 
-class SoftParser implements ParserStrategy{
+public class SoftParser implements ParserStrategy{
 	private String line;//what we use to read the line in.
 	private String header;//to get the first line in.
 	private int count =0;

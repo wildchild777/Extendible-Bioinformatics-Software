@@ -9,6 +9,12 @@ import java.util.Map;
 
 import org.junit.jupiter.api.Test;
 
+import model.Centroids;
+import model.Entry;
+import model.EucledianDistance;
+import model.KmeansClustering;
+import model.SoftParser;
+
 
 public class KmeansTest {
 	

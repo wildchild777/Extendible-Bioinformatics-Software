@@ -1,3 +1,4 @@
+package model;
 /**
  * This interface is used for classes that return data that has been worked on by 
  * clustering algorithms

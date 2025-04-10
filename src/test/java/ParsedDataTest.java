@@ -6,6 +6,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.junit.jupiter.api.Test;
+
+import model.Entry;
+import model.GeneExpressionParsedData;
 public class ParsedDataTest {
 	@Test
 	void setup() {
