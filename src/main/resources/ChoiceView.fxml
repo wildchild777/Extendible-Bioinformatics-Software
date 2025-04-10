@@ -5,7 +5,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.Controller">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.ChoiceViewController">
    <children>
       <Label fx:id="text2" alignment="CENTER" layoutX="118.0" layoutY="64.0" text="What would you like to do today?">
          <font>
@@ -22,7 +22,7 @@
             <Font size="22.0" />
          </font>
       </Label>
-      <Button fx:id="clusteringButton" layoutX="118.0" layoutY="242.0" mnemonicParsing="false" onAction="#changeToClustertingScene" text="go -&gt;" />
-      <Button fx:id="configureButton" layoutX="394.0" layoutY="242.0" mnemonicParsing="false" onAction="#changeToConfigureScene" text="go -&gt;" />
+      <Button fx:id="clusteringButton" layoutX="118.0" layoutY="242.0" mnemonicParsing="false" text="go -&gt;" />
+      <Button fx:id="configureButton" layoutX="394.0" layoutY="242.0" mnemonicParsing="false" onAction="#changeView" text="go -&gt;" />
    </children>
 </AnchorPane>
