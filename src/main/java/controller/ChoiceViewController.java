@@ -19,8 +19,8 @@ public class ChoiceViewController {
 		 try {
 			 FXMLLoader loader = new FXMLLoader(getClass().getResource("/PickView.fxml"));
 			 Parent root = loader.load();
-			 ChoiceViewController controller = loader.getController();
-	         controller.setStage(stage); // 🔁 pass it forward
+			 PickViewController controller = loader.getController();
+	         controller.setStage(stage); // pass it forward
 
 	         stage.setScene(new Scene(root, 800, 600));
 			

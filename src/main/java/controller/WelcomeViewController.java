@@ -25,7 +25,7 @@ public class WelcomeViewController {
 			 FXMLLoader loader = new FXMLLoader(getClass().getResource("/ChoiceView.fxml"));
 			 Parent root = loader.load();
 			 ChoiceViewController controller = loader.getController();
-	         controller.setStage(stage); // 🔁 pass it forward
+	         controller.setStage(stage); // pass it forward
 
 	         stage.setScene(new Scene(root, 800, 600));
 			
