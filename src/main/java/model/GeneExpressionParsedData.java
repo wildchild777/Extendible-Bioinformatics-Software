@@ -16,9 +16,9 @@ public class GeneExpressionParsedData implements ParsedData {
 	
 	/**This is used to get a list of all the entires held in entry
 	 * @return This returns a list 
-	 *  
+	 *   
 	 */
-	public List<Entry>getEntries(){
+	public List<Entry> getEntries(){
 		return entry;
 	}
 	/**

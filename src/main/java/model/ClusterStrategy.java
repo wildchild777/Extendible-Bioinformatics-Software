@@ -15,5 +15,5 @@ public interface ClusterStrategy {
 	 * -> entry(needs to be changed) with meaningful insights
 	 */
 	// this needs to return a proper subclass of the interface of CLusteredData
-	Map<Centroids, List<Entry>>fit(List<Entry> entry, int k, Distance distance, int maxIterations);
+	Map<Centroids, List<Entry>>fit(ParsedData entry, int k, Distance distance, int maxIterations);
 }

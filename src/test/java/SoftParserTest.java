@@ -7,8 +7,7 @@ import java.util.Map;
 
 import org.junit.jupiter.api.Test;
 
-import model.Entry;
-import model.SoftParser;
+import model.*;
 
 class SoftParserTest {
 
@@ -41,30 +40,32 @@ class SoftParserTest {
 		}
 	}
 	@Test
-	void read_and_store() {
-		//each parser run should use a new instance of the parser
-		SoftParser soft = new SoftParser();
-		SoftParser soft2 = new SoftParser();
-		List<Entry> temp = new ArrayList();
-		temp = (List<Entry>) soft.parse("src/main/resources/ParseTestFile.soft");
-		assertNotNull(temp);
-		assertEquals(6,temp.size());
-		List<Entry> temp2= new ArrayList();
-		temp2 = (List<Entry>) soft2.parse("src/main/resources/ParseTestFile.soft");
-		assertEquals(temp.size(),temp2.size(),"their sizes should be the same");
-		for(int i =0;i<temp.size();i++) {
-			Entry tempEntry = temp.get(i);
-			Entry tempEntry2= temp2.get(i);
-			String tempEntryName = tempEntry.getName();
-			String tempEntryName2 = tempEntry.getName();
-			Map<String,Double> tempEntryGene =tempEntry.getGene();
-			Map<String,Double> tempEntryGene2 =tempEntry2.getGene();
-			
-			
-			assertEquals(tempEntryName,tempEntryName2);
-			assertEquals(tempEntryGene,tempEntryGene2);
-			
-		}
+		void read_and_store() {
+			//each parser run should use a new instance of the parser
+			SoftParser soft = new SoftParser();
+			SoftParser soft2 = new SoftParser();
+			//List<Entry> temp = new ArrayList();
+			ParsedData temp = soft.parse("src/main/resources/ParseTestFile.soft");
+			assertNotNull(temp);
+			List<Entry> temp_entries= temp.getEntries();
+			assertEquals(6,temp_entries.size());
+			//List<Entry> temp2= new ArrayList();
+			ParsedData temp2 = soft2.parse("src/main/resources/ParseTestFile.soft");
+			List<Entry> temp2_entries= temp2.getEntries();
+			assertEquals(temp_entries.size(),temp2_entries.size(),"their sizes should be the same");
+			for(int i =0;i<temp_entries.size();i++) {
+				Entry tempEntry = temp_entries.get(i);
+				Entry tempEntry2= temp2_entries.get(i);
+				String tempEntryName = tempEntry.getName();
+				String tempEntryName2 = tempEntry.getName();
+				Map<String,Double> tempEntryGene =tempEntry.getGene();
+				Map<String,Double> tempEntryGene2 =tempEntry2.getGene();
+				
+				
+				assertEquals(tempEntryName,tempEntryName2);
+				assertEquals(tempEntryGene,tempEntryGene2);
+				
+			}
 	}
 }
 

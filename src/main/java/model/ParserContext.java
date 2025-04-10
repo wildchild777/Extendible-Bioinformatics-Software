@@ -21,7 +21,7 @@ public class ParserContext {
 	 * @param filename - the file we want to parse
 	 * @return - returns ParsedData which can be further used
 	 */
-	public List<Entry> executeParse(String filename) {
+	public ParsedData executeParse(String filename) {
         if (strategy == null) {
             throw new IllegalStateException("ParserStrategy is not set.");
         }

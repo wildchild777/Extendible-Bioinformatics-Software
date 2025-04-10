@@ -14,7 +14,7 @@ import java.util.Map;
  * This class is used to handle a single entry of the column in the database 
  * basically a sample and it's gene expressions
  */
-public class Entry implements ParsedData{
+public class Entry {
 	private final String name;
 	private final Map<String,Double> sample;
 	

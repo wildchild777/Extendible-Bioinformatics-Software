@@ -7,6 +7,7 @@ import java.util.List;
 import org.junit.jupiter.api.Test;
 
 import model.Entry;
+import model.ParsedData;
 import model.ParserContext;
 import model.SoftParser;
 
@@ -15,9 +16,8 @@ public class ParserContextTest {
 	@Test
 	public void Setup() {
 		ParserContext context = new ParserContext();
-		List<Entry> holder = new ArrayList<Entry>();
 		context.setParser(new SoftParser());
-		holder = context.executeParse("src/main/resources/ParseTestFile.soft");
+		ParsedData holder = context.executeParse("src/main/resources/ParseTestFile.soft");
 		assertNotNull(holder);
 		System.out.println(holder);
 	}

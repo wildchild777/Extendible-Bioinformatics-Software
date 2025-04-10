@@ -11,6 +11,7 @@ import model.ClusterContext;
 import model.Entry;
 import model.EucledianDistance;
 import model.KmeansClustering;
+import model.ParsedData;
 import model.ParserContext;
 import model.SoftParser;
 
@@ -22,9 +23,9 @@ public class ClusterContextTest {
 	@Test
 	public void Setup() {
 		ParserContext context = new ParserContext();
-		List<Entry> holder = new ArrayList<Entry>();
+		//ParsedData holder = new ArrayList<Entry>();
 		context.setParser(new SoftParser());
-		holder = context.executeParse("src/main/resources/ParseTestFile.soft");
+		ParsedData holder = context.executeParse("src/main/resources/KmeansTemp.soft");
 		assertNotNull(holder);
 		//System.out.println(holder);
 		EucledianDistance length = new EucledianDistance();

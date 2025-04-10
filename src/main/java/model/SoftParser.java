@@ -20,7 +20,7 @@ public class SoftParser implements ParserStrategy{
 	private List<String[]> data= new ArrayList<>();// this list stores a gene and it's expression vlaues.
 	private List<Entry> entries = new ArrayList<>();//possibly change it here - so that we make a list of ent
 	
-	public List<Entry> parse(String filename) {
+	public ParsedData parse(String filename) {
 		 
 		if(!filename.endsWith(".soft")) {throw new IllegalArgumentException("Invalid file type: Expected a .soft file");}
 		try {
@@ -105,6 +105,11 @@ public class SoftParser implements ParserStrategy{
 		System.out.println("Something went wrong");
 		e.printStackTrace();
 	}
-	return entries;
+		//the only addition so we can use ParsedData across all our methods, which makes it cleaner.
+		GeneExpressionParsedData parsedData = new GeneExpressionParsedData();
+		for (Entry e : entries) {
+		    parsedData.add(e);
+		}
+		return parsedData; 
 	}
 }

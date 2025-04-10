@@ -9,7 +9,6 @@ public interface ParserStrategy {
  * @return a type of parsedData 
  */
 	//need to change this to return a concrete subclass of the the interface ParsedData
-	
-	public List<Entry> parse(String filename);
+	public ParsedData parse(String filename);
 
 }

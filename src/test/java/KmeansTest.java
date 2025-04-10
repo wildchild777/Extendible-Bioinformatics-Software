@@ -12,7 +12,9 @@ import org.junit.jupiter.api.Test;
 import model.Centroids;
 import model.Entry;
 import model.EucledianDistance;
+import model.GeneExpressionParsedData;
 import model.KmeansClustering;
+import model.ParsedData;
 import model.SoftParser;
 
 
@@ -21,8 +23,7 @@ public class KmeansTest {
 	@Test
 	void Entry_class_return() {
 		SoftParser parser = new SoftParser();
-		List<Entry> temp = new ArrayList<Entry>();
-		temp = parser.parse("src/main/resources/ParseTestFile.soft");
+		ParsedData temp = parser.parse("src/main/resources/ParseTestFile.soft");
 		EucledianDistance length = new EucledianDistance();
 		Map<Centroids, List<Entry>> f = new HashMap<Centroids, List<Entry>>();
 		KmeansClustering cluster = new KmeansClustering();
@@ -32,8 +33,7 @@ public class KmeansTest {
 	@Test
 	void predicted_return() {
 	SoftParser parser = new SoftParser();
-	List<Entry> temp = new ArrayList<Entry>();
-	temp = parser.parse("src/main/resources/KmeansTemp.soft");
+	ParsedData temp = parser.parse("src/main/resources/KmeansTemp.soft");
 	EucledianDistance length = new EucledianDistance();
 	KmeansClustering cluster = new KmeansClustering();
 	Map<Centroids, List<Entry>> f = new HashMap<Centroids, List<Entry>>();
@@ -54,8 +54,7 @@ public class KmeansTest {
 	@Test 
 	void another_predicted() {
 		SoftParser parser = new SoftParser();
-		List<Entry> temp = new ArrayList<Entry>();
-		temp = parser.parse("src/main/resources/KmeansTemp.soft");
+		ParsedData temp = parser.parse("src/main/resources/KmeansTemp.soft");
 		EucledianDistance length = new EucledianDistance();
 		
 		Map<Centroids, List<Entry>> f = new HashMap<Centroids, List<Entry>>();
@@ -75,11 +74,18 @@ public class KmeansTest {
 		    testEntries.add(new Entry("Sample3", Map.of("Gene1", 9.0, "Gene2", 9.5, "Gene3", 10.0)));
 		    testEntries.add(new Entry("Sample4", Map.of("Gene1", 9.2, "Gene2", 9.6, "Gene3", 10.2)));
 		    
+		    //changed this to add to the wrapped Gene class so we can use the interface ParsedData
+		    //instead of concrete subclass Entry
+		    GeneExpressionParsedData parsedData = new GeneExpressionParsedData();
+		    for (Entry e : testEntries) {
+		        parsedData.add(e);
+		    }
+		    
 		    int k = 2;
 		    int maxIterations = 100;
 		    EucledianDistance length = new EucledianDistance();
 		    KmeansClustering clustering = new KmeansClustering();
-		    Map<Centroids, List<Entry>> clusters = clustering.fit(testEntries, k, length, maxIterations);
+		    Map<Centroids, List<Entry>> clusters = clustering.fit(parsedData, k, length, maxIterations);
 
 		    for (Map.Entry<Centroids, List<Entry>> cluster : clusters.entrySet()) {
 		        System.out.println("Centroid: " + cluster.getKey());
