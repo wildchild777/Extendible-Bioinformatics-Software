@@ -1,31 +1,25 @@
 // A temp class made to test the SoftParser
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import javafx.application.Application;
+import javafx.scene.Scene;
+import javafx.scene.layout.StackPane;
+import javafx.stage.Stage;
 
-public class TempMain {
-	public static void main(String args[]) {
-		parser parser = new parser();
-		List<Entry> temp = new ArrayList<>();
-		EucledianDistance length = new EucledianDistance();
-		
-		
-		
-		try {
-			temp = parser.softparser("src/main/resources/TestFile.soft");
-			
-			KmeansClustering.fit(temp,3,length,3);
-			for (Entry row : temp) {
-                System.out.println(row);
-            }
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-		
-	}
+public class TempMain extends Application {
+
+    @Override
+    public void start(Stage primaryStage) {
+        StackPane root = new StackPane(); // A simple empty container
+
+        Scene scene = new Scene(root, 800, 600); // Width x Height
+
+        primaryStage.setTitle("Clustering App");
+        primaryStage.setScene(scene);
+        primaryStage.show(); // Launch the UI
+    }
+
+    public static void main(String[] args) {
+        launch(args); // Start JavaFX lifecycle
+    }
 }
 
