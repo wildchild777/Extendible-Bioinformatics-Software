@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.Controller">
+   <children>
+      <Label fx:id="text2" alignment="CENTER" layoutX="118.0" layoutY="64.0" text="What would you like to do today?">
+         <font>
+            <Font size="27.0" />
+         </font>
+      </Label>
+      <Label fx:id="clusteringText" layoutX="90.0" layoutY="184.0" prefHeight="32.0" prefWidth="150.0" text="Run cluserting">
+         <font>
+            <Font size="22.0" />
+         </font>
+      </Label>
+      <Label fx:id="configureText" layoutX="359.0" layoutY="184.0" prefHeight="32.0" prefWidth="150.0" text="Configure run">
+         <font>
+            <Font size="22.0" />
+         </font>
+      </Label>
+      <Button fx:id="clusteringButton" layoutX="118.0" layoutY="242.0" mnemonicParsing="false" onAction="#changeToClustertingScene" text="go -&gt;" />
+      <Button fx:id="configureButton" layoutX="394.0" layoutY="242.0" mnemonicParsing="false" onAction="#changeToConfigureScene" text="go -&gt;" />
+   </children>
+</AnchorPane>
