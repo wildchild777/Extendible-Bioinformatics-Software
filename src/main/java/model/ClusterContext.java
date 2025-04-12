@@ -1,6 +1,9 @@
 package model;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+
+import view.Observer;
 
 /**
  * This class passes request to the concrete subclasses after getting 
@@ -10,6 +13,8 @@ import java.util.Map;
  */
 public class ClusterContext {
 	   private ClusterStrategy strategy;//privately held strategy
+	   private final List<Observer> observers = new ArrayList<>();//list of the observers we have 
+	   private ClusteredData clusteredData;//our data
 
 	    // Set the clustering strategy
 	    public void setClusterStrategy(ClusterStrategy strategy) {
@@ -22,7 +27,23 @@ public class ClusterContext {
 	        if (strategy == null) {
 	            throw new IllegalStateException("ClusterStrategy is not set.");
 	        }
-	        return strategy.fit(data,k,distance,maxIterations);
+	        clusteredData = strategy.fit(data,k,distance,maxIterations);
+	        notifyObservers();
+	        return clusteredData;
 	    }
+	    
+	    public void addObserver(Observer observer) {
+	        observers.add(observer);
+	    }
+
+	    public void removeObserver(Observer observer) {
+	        observers.remove(observer);
+	    }
+	    
+	    private void notifyObservers() {
+	        for (Observer o : observers) {
+	            o.update(clusteredData);
+	        }
 	}
 
+}
