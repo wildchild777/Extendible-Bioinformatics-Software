@@ -8,6 +8,7 @@ import javafx.fxml.FXML;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
+import javafx.scene.layout.StackPane;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import model.*;
@@ -29,6 +30,7 @@ public class PickViewController {
 	private ScatterPlotView scatterPlotView;
 	//to hold our parsedData - for now it's just one field later we will add so we can hold multiple
 	private ParsedData currentData;
+	private ClusteredData result;
 
 	public void setStage(Stage stage) {
 	    this.stage = stage;
@@ -91,54 +93,62 @@ public class PickViewController {
 	        }
 	    }
 	}
-	
-	//have to refactor this later
 	private void handleClusteringExecution() {
-		//first we have to select a dataset for things to run
-		if (currentData == null) {
+	    if (!validateSelections()) return;
+
+	    runClustering();
+
+	    renderVisualization();
+	}
+	
+	private boolean validateSelections() {
+	    if (currentData == null) {
 	        System.out.println("No dataset loaded.");
-	        return;
+	        return false;
 	    }
-		//get the name of the algorithm selected 
+
 	    String selectedAlgo = AlgorithmDrop.getValue();
-	    //if it's anything else than K-means we'll say no
 	    if (!"K-Means".equals(selectedAlgo)) {
 	        System.out.println("Only K-Means is supported right now.");
-	        return;
+	        return false;
 	    }
+
+	    return true;
+	}
+	
+	private void runClustering() {
 	    clusteringController.setClusteringStrategy(new KmeansClustering());
-	    // You could use defaults or ask the user later
 	    int k = 2;
 	    int maxIterations = 100;
 	    Distance distance = new EucledianDistance();
 
-	    ClusteredData result = clusteringController.runClustering(currentData, k, distance, maxIterations);
+	     result = clusteringController.runClustering(currentData, k, distance, maxIterations);
 	    System.out.println("Clustering completed: \n" + result);
-	//here we get the selected vizualization 
-	    String selectedViz = VizDrop.getValue();
-
-	    if ("Scatter Plot".equals(selectedViz)) {
-	        // Create the view
-	        scatterPlotView = new ScatterPlotView();
-
-	        // Register as observer :do this before clustering
-	        clusteringController.getClusterContext().addObserver(scatterPlotView);
-
-	        // Manually update the view with results (safe approach)
-	        scatterPlotView.update(result);
-
-	        // Show in new window
-	        Stage vizStage = new Stage();
-	        vizStage.setTitle("Cluster Visualization - Scatter Plot");
-	        Scene scene = new Scene(scatterPlotView, 800, 600);
-	        vizStage.setScene(scene);
-	        vizStage.show();
-	    }
-	
-	
-	
+	    
 	}
-	 
+	
+	private void renderVisualization() {
+        String selectedViz = VizDrop.getValue();
+
+        if ("Scatter Plot".equals(selectedViz)) {
+            scatterPlotView = new ScatterPlotView();
+            clusteringController.getClusterContext().addObserver(scatterPlotView);
+            scatterPlotView.update(result);
+            openViewInNewWindow(scatterPlotView, "Cluster Visualization - Scatter Plot");
+        }
+    }
+	
+	private void openViewInNewWindow(javafx.scene.Node view, String title) {
+        Stage vizStage = new Stage();
+        vizStage.setTitle(title);
+        Scene scene = new Scene(new StackPane(view), 800, 600);
+        vizStage.setScene(scene);
+        vizStage.show();
+    }
+	
+	
+	
+	
 	
 	
 }
