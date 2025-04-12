@@ -2,11 +2,13 @@ package controller;
 
 import java.io.File;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.layout.StackPane;
 import javafx.stage.FileChooser;
@@ -24,6 +26,9 @@ public class PickViewController {
 	private ComboBox<String> VizDrop;
 	@FXML
 	private Button executeConfig;
+	@FXML 
+	private CheckBox DimensionCheckBox;
+	
 	private final Map<String, File> datasetMap = new HashMap<>();//holds value -> file
 	private Stage stage; // passed from previous controller
 	private ClusteringController clusteringController;
@@ -44,7 +49,7 @@ public class PickViewController {
 	public void initialize() {
 	    // Hardcoded later plug-in
 	    try {
-	        File sample1 = new File(getClass().getResource("/KmeansTemp.soft").toURI());//hardcoded
+	        File sample1 = new File(getClass().getResource("/ParseTestFile.soft").toURI());//hardcoded
 	        String name = sample1.getName(); 
 	        AlgorithmDrop.getItems().add("K-Means");
 	        VizDrop.getItems().add("Scatter Plot");
@@ -96,6 +101,17 @@ public class PickViewController {
 	private void handleClusteringExecution() {
 	    if (!validateSelections()) return;
 
+	    if (DimensionCheckBox.isSelected()) {
+	    	System.out.println("Running PCA reduction to 2D");
+	        DimensionalityReducer reducer = new PcaReducer(); // maybe switch based on user later
+	        List<Entry> reduced = reducer.reduce(currentData.getEntries(), 2);
+	        currentData = new GeneExpressionParsedData();
+	        for (Entry e : reduced) {
+	            ((GeneExpressionParsedData) currentData).add(e);
+	        }
+	    }
+	    
+	    
 	    runClustering();
 
 	    renderVisualization();
