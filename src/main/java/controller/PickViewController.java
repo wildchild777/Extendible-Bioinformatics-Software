@@ -4,6 +4,7 @@ import java.io.File;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
@@ -14,7 +15,7 @@ import javafx.scene.layout.StackPane;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import model.*;
-import view.ScatterPlotView;
+import view.*;
 
 public class PickViewController {
 	
@@ -36,6 +37,7 @@ public class PickViewController {
 	//to hold our parsedData - for now it's just one field later we will add so we can hold multiple
 	private ParsedData currentData;
 	private ClusteredData result;
+	private boolean isReduced = false;
 
 	public void setStage(Stage stage) {
 	    this.stage = stage;
@@ -101,7 +103,7 @@ public class PickViewController {
 	private void handleClusteringExecution() {
 	    if (!validateSelections()) return;
 
-	    if (DimensionCheckBox.isSelected()) {
+	    if (DimensionCheckBox.isSelected() && !isReduced) {
 	    	System.out.println("Running PCA reduction to 2D");
 	        DimensionalityReducer reducer = new PcaReducer(); // maybe switch based on user later
 	        List<Entry> reduced = reducer.reduce(currentData.getEntries(), 2);
@@ -109,6 +111,7 @@ public class PickViewController {
 	        for (Entry e : reduced) {
 	            ((GeneExpressionParsedData) currentData).add(e);
 	        }
+	        isReduced = true;
 	    }
 	    
 	    
@@ -133,13 +136,22 @@ public class PickViewController {
 	}
 	
 	private void runClustering() {
-	    clusteringController.setClusteringStrategy(new KmeansClustering());
-	    int k = 2;
-	    int maxIterations = 100;
-	    Distance distance = new EucledianDistance();
+		String selectedAlgo = AlgorithmDrop.getValue();
+	    if (!"K-Means".equals(selectedAlgo)) return;
 
-	     result = clusteringController.runClustering(currentData, k, distance, maxIterations);
-	    System.out.println("Clustering completed: \n" + result);
+	    // Show the config dialog
+	    KMeansConfigDialog dialog = new KMeansConfigDialog();
+	    Optional<KMeansConfig> configResult = dialog.showAndWait(stage);
+
+	    if (configResult.isPresent()) {
+	        KMeansConfig config = configResult.get(); // get k, maxIterations, distance
+
+	        clusteringController.setClusteringStrategy(new KmeansClustering());
+	        result = clusteringController.runClustering(currentData, config.getK(), config.getDistance(), config.getMaxIterations());
+	        System.out.println("Clustering completed: \n" + result);
+	    } else {
+	        System.out.println("K-Means configuration cancelled.");
+	    }
 	    
 	}
 	
