@@ -19,7 +19,7 @@ public class SoftParser implements ParserStrategy{
 	private int count =0;
 	private List<String[]> data= new ArrayList<>();// this list stores a gene and it's expression vlaues.
 	private List<Entry> entries = new ArrayList<>();//possibly change it here - so that we make a list of ent
-	
+	int invalidValueCount = 0;
 	public ParsedData parse(String filename) {
 		 
 		if(!filename.endsWith(".soft")) {throw new IllegalArgumentException("Invalid file type: Expected a .soft file");}
@@ -60,10 +60,17 @@ public class SoftParser implements ParserStrategy{
 			}
 			String[] entries = line.split("\t");//splits the entries that we get, since they are tab delimited.
 			 String gene = entries[1]; // Gene name (second column)
-             for (int i = 2; i < numberOfSamples; i++) { // Start from the third column
-                 double expressionValue = Double.parseDouble(entries[i]);
-                 sampleData.get(i - 2).put(gene, expressionValue);
-             }
+             
+			 for (int i = 2; i < numberOfSamples; i++) {
+				    String expr = entries[i].trim();
+				    try {
+				        double expressionValue = Double.parseDouble(expr);
+				        sampleData.get(i - 2).put(gene, expressionValue);
+				    } catch (NumberFormatException e) {//if we get a null value we add it to the invalid count and print it out 
+				        invalidValueCount++;
+				        System.err.println("Skipping invalid value: '" + expr + "' for gene " + gene + " in sample " + header_info.get(i - 2));
+				    }
+				}
 		}
 		//this stores all the lines of the file -> we want to go until the max column and any amount of rows 
 		//so for each sample(i -> loop)
@@ -73,29 +80,16 @@ public class SoftParser implements ParserStrategy{
 		
 		int max = Collections.max(header_info.keySet());//has mapping from int -> gsm sample, and we need the int for the largest one
 		
-		for(int i=0; i<count;i++){//go through all the GSM samples
-			String GSMsample = header_info.get(i);
-			Map<String,Double> geneData = sampleData.get(i);
-			entries.add(new Entry(GSMsample,geneData));
-		}
 		
-		/*
-		while((line=br.readLine())!=null) {
-			if(line.startsWith("^")|| line.startsWith("!") ||line.startsWith("#") ) {
-				continue;//we'll skip the meta data lines.
-			}
-			String[] entries = line.split("\t");//splits the entries that we get, since they are tab delimited.
-			
-			
-			
-			
-			
-			String[] geneData = new String[numberOfSamples];
-		    for (int i = 0; i < numberOfSamples; i++) {
-		        geneData[i] = entries[i]; // Copy only necessary columns
+		for (int i = 0; i < count; i++) {
+		    String GSMsample = header_info.get(i);
+		    Map<String, Double> geneData = sampleData.get(i);
+		    if (!geneData.isEmpty()) {//this is to catch null entries
+		        entries.add(new Entry(GSMsample, geneData));
+		    } else {
+		        System.err.println("Skipping empty sample: " + GSMsample);
 		    }
-		    data.add(geneData); // Add the parsed row to the data list
-			}*/
+		}
 		
 		br.close();
 		} catch (FileNotFoundException e) {

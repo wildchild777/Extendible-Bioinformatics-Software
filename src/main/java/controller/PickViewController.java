@@ -51,7 +51,7 @@ public class PickViewController {
 	public void initialize() {
 	    // Hardcoded later plug-in
 	    try {
-	        File sample1 = new File(getClass().getResource("/ParseTestFile.soft").toURI());//hardcoded
+	        File sample1 = new File(getClass().getResource("/GDS3310_full.soft").toURI());//hardcoded
 	        String name = sample1.getName(); 
 	        AlgorithmDrop.getItems().add("K-Means");
 	        VizDrop.getItems().add("Scatter Plot");
