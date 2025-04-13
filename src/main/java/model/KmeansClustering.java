@@ -18,7 +18,7 @@ public class KmeansClustering implements ClusterStrategy {
 	 * @param dataset our dataset - i.e list of entires
 	 * @param k the number of centroids we want to generate 
 	 * @return a list of random centroids in the same plane as our dataset.
-	 */
+	 */ 
 	private List<Centroids> randomCentroids(List<Entry> dataset, int k){
 		
 		List<Centroids> centroids = new ArrayList<>();
@@ -206,6 +206,14 @@ public class KmeansClustering implements ClusterStrategy {
 	}
 	
 	/**
+	 * Shows which data it can work with
+	 */
+	@Override
+	public boolean supports(ParsedData data) {
+	    return data instanceof EntryBasedData;
+	}
+	
+	/**
 	 * 
 	 * @param entry the class we use for our gene expression that we parse
 	 * @param k the number of clusters
@@ -216,7 +224,11 @@ public class KmeansClustering implements ClusterStrategy {
 	//need to change this so it returns a CusterdData
 	@Override
 	public ClusteredData fit (ParsedData data, int k, Distance distance, int maxIterations){
-		List<Entry> entry = data.getEntries();
+		  if (!(data instanceof EntryBasedData)) {
+		        throw new IllegalArgumentException("KMeans only supports EntryBasedData.");
+		    }
+
+		List<Entry> entry = ((EntryBasedData) data).getEntries();
 		List<Centroids> centroids = randomCentroids(entry,k);
 		Map<Centroids, List<Entry>> clusters = new HashMap<>();
 		Map<Centroids, List<Entry>> lastState= new HashMap<>();  

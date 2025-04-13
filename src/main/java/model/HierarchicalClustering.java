@@ -5,16 +5,26 @@ import java.util.*;
 public class HierarchicalClustering implements ClusterStrategy {
 
     private Distance distanceMeasure;
-/**
+
+    @Override
+    public boolean supports(ParsedData data) {
+        return data instanceof EntryBasedData;
+    }
+    
+    /**
  * Since the signature of the interface needs this - we just get the important things out and 
  * pass it to local fit method 
  */
     @Override
     public ClusteredData fit(ParsedData data, int k, Distance distance, int maxIterations) {
-        return fit(data, distance);
-    }
+    	 if (!(data instanceof EntryBasedData)) {
+             throw new IllegalArgumentException("HierarchicalClustering supports only EntryBasedData.");
+         }
+         return fit((EntryBasedData) data, distance);
+     }
+    
 
-    public ClusteredData fit(ParsedData data, Distance distance) {
+    public ClusteredData fit(EntryBasedData data, Distance distance) {
         this.distanceMeasure = distance;
         List<Entry> entries = data.getEntries(); 
 
