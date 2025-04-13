@@ -18,4 +18,11 @@ public interface ClusterStrategy {
 	 */
 	// this needs to return a proper subclass of the interface of CLusteredData
 	ClusteredData fit(ParsedData entry, int k, Distance distance, int maxIterations);
+	
+	 /**
+     * Check if the clustering algorithm can handle the given ParsedData type.
+     */
+    default boolean supports(ParsedData data) {
+        return true; // by default allow all
+    }
 }

@@ -25,7 +25,7 @@ public class PickViewController {
 	private ComboBox<String> AlgorithmDrop;
 	@FXML
 	private ComboBox<String> VizDrop;
-	@FXML
+	@FXML 
 	private Button executeConfig;
 	@FXML 
 	private CheckBox DimensionCheckBox;
@@ -105,12 +105,19 @@ public class PickViewController {
 
 	    if (DimensionCheckBox.isSelected() && !isReduced) {
 	    	System.out.println("Running PCA reduction to 2D");
-	        DimensionalityReducer reducer = new PcaReducer(); // maybe switch based on user later
-	        List<Entry> reduced = reducer.reduce(currentData.getEntries(), 2);
-	        currentData = new GeneExpressionParsedData();
-	        for (Entry e : reduced) {
-	            ((GeneExpressionParsedData) currentData).add(e);
+	    if (!(currentData instanceof GeneExpressionParsedData)) {
+	        System.err.println("PCA currently only supports GeneExpressionParsedData");
+            return;
 	        }
+	    	GeneExpressionParsedData geneData = (GeneExpressionParsedData) currentData;
+	        DimensionalityReducer reducer = new PcaReducer(); // maybe switch based on user later
+	        List<Entry> reduced = reducer.reduce(geneData.getEntries(), 2);
+	        
+	        GeneExpressionParsedData reducedData = new GeneExpressionParsedData();
+	        for (Entry e : reduced) {
+	            reducedData.add(e);
+	        }
+	        currentData = reducedData;
 	        isReduced = true;
 	    }
 	    

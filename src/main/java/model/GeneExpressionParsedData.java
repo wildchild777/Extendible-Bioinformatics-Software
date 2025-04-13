@@ -8,7 +8,7 @@ import java.util.Map;
  * This class is a type of data that holds gene expression data - like the ones you get if you parse SOFT files.
  * 
  */
-public class GeneExpressionParsedData implements ParsedData {
+public class GeneExpressionParsedData implements EntryBasedData  {
 	
 	private List<Entry> entry = new ArrayList<Entry>();//where we store all the entries
 	private List<String> name= new ArrayList<String>();//where we store all the entries
