@@ -587,3 +587,197 @@ rectangle "Model" as M {
 V -left[#hidden]-> M
 C -left[#hidden]-> M
 @enduml
+
+
+
+'''''''''''''
+version 7
+
+@startuml
+
+' Force layout with positioning
+
+rectangle "View" as V {
+    interface Observer {
+        +update(data: ClusteredData)
+    }
+
+    interface VisualizationView {
+        +displayClusters(data: ClusteredData)
+    }
+
+    class ScatterPlotView {
+        +displayClusters(data: ClusteredData)
+        +update(data: ClusteredData)
+    }
+
+    VisualizationView <|.. ScatterPlotView
+    Observer <|.. ScatterPlotView
+
+    class PickViewController {
+        - DimensionCheckBox: CheckBox
+        - datasetDrop: ComboBox
+        - AlgorithmDrop: ComboBox
+        - VizDrop: ComboBox
+        - stage: Stage
+        + handleDatasetSelection()
+        + handleClusteringExecution()
+    }
+}
+
+rectangle "Controller" as C {
+    class ClusteringController {
+        -parserContext: ParserContext
+        -clusterContext: ClusterContext
+        +loadData(filename: String)
+        +runClustering(data: ParsedData, k: int, distance: Distance, maxIterations: int): ClusteredData
+        +setClusteringStrategy(strategy: ClusterStrategy)
+        +getClusterContext(): ClusterContext
+    }
+}
+
+rectangle "Model" as M {
+    ' Layer 1: Entry & ParsedData types
+    class Entry {
+        -name: String 
+        -sample: Map<String, Double>
+        +Entry(name:String,sample:Map<String,Double>)
+        +getName(): String
+        +getGene(): Map<String, Double>
+        +toString():String
+    }
+
+    interface ParsedData {
+        +getEntries(): List<Entry>
+    }
+
+    class GeneExpressionParsedData {
+        -entry: List<Entry>
+        +getEntries(): List<Entry>
+        +addEntry(temp : Entry)
+        +getName() : List<String>
+        +getGene() : List<Map<String,Double>>
+        +getSpecificGene(sampleName : String) : Map<String,Double>
+    }
+
+    ' Layer 2: Parsing
+    interface ParserStrategy {
+        +parse(filename: String): ParsedData
+    }
+
+    class SoftParser {
+        -line: String
+        -header: String
+        -count: Int
+        -data: List<String[]>
+        -entries: List<Entry>
+        +parse(filename: String): ParsedData
+    }
+
+    class ParserContext {
+        -strategy: ParserStrategy
+        +setParser(strategy: ParserStrategy)
+        +executeParse(filename: String): ParsedData
+    }
+
+    ' Layer 3: Clustering Core
+    interface ClusterStrategy {
+        +fit(data: ParsedData): ClusteredData
+    }
+
+    class KMeansClustering {
+        -random:Random
+        +fit(entry: List<Entry>, k: int, distance: Distance, maxIterations: int): Map<Centroids, List<Entry>>
+    }
+
+    class ClusterContext {
+        -strategy: ClusterStrategy
+        -observers: List<Observer>
+        -clusteredData: ClusteredData
+        +setClusterStrategy(strategy: ClusterStrategy)
+        +executeClustering(data: ParsedData, k: int, distance: Distance, maxIterations: int): ClusteredData
+        +addObserver(o: Observer)
+        +removeObserver(o: Observer)
+        +notifyObservers()
+    }
+
+    interface ClusteredData {}
+    class FlatClusteredData {
+        -clusters: Map<Centroids, List<Entry>>
+        +FlatClusteredData(clusters: Map<Centroids, List<Entry>>)
+        +getClusters(): Map<Centroids, List<Entry>>
+        +toString(): String
+    }
+
+    class Centroids {
+        -coordinates: Map<String, Double>
+        +getCoordinates(): Map<String, Double>
+        +Centroids(coordinates: Map<String, Double>)
+    }
+
+    ' Layer 4: Distance
+    interface Distance {
+        +calculate(vector1: Map<String, Double>, vector2: Map<String, Double>): double
+    }
+
+    class EuclideanDistance {
+        +calculate(p1: Map<String, Double>, p2: Map<String, Double>): double
+    }
+
+    ' Layer 5: Dimensionality Reduction
+    interface DimensionalityReducer {
+        +reduce(entries: List<Entry>, targetDimensions: int): List<Entry>
+    }
+
+    class PcaReducer {
+        -MAX_GENES: int
+        +reduce(entries: List<Entry>, targetDimensions: int): List<Entry>
+    }
+
+    ' Layer 6: Configuration
+    class KMeansConfig {
+        +k(): int
+        +maxIterations(): int
+        +distance(): Distance
+    }
+
+    interface ClusteringConfigDialog<T> {
+        +showAndWait(owner: Window): Optional<T>
+    }
+
+    class KMeansConfigDialog {
+        +showAndWait(owner: Window): Optional<KMeansConfig>
+    }
+
+    ' Relationships
+    ParserStrategy <|.. SoftParser
+    ParserContext --> ParserStrategy : uses
+    ParserContext --> "1" ParsedData : returns
+    SoftParser --> ParsedData : returns
+    GeneExpressionParsedData ..|> ParsedData : implements
+    GeneExpressionParsedData --> Entry : contains
+
+    ClusterStrategy <|.. KMeansClustering
+    ClusterContext --> ClusterStrategy : uses
+    KMeansClustering --> Centroids : uses
+    KMeansClustering --> Distance : uses
+    Distance <|.. EuclideanDistance
+    KMeansClustering --> ClusteredData : returns
+    ClusterContext --> ParsedData : uses
+    ClusterContext --> ClusteredData : returns
+    ClusterContext --> Observer : notifies
+    ClusteredData <|.. FlatClusteredData
+
+    DimensionalityReducer <|.. PcaReducer
+    PcaReducer --> Entry : reduces
+    PcaReducer ..> ParsedData : gets entries from
+
+    ClusteringConfigDialog <|.. KMeansConfigDialog
+    KMeansConfigDialog ---> KMeansConfig : uses
+    ClusteringController --> ParserContext : uses
+    ClusteringController --> ClusterContext : uses
+}
+
+
+@enduml
+
