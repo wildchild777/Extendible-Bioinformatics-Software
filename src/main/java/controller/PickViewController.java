@@ -51,10 +51,10 @@ public class PickViewController {
 	public void initialize() {
 	    // Hardcoded later plug-in
 	    try {
-	        File sample1 = new File(getClass().getResource("/GDS3310_full.soft").toURI());//hardcoded
+	        File sample1 = new File(getClass().getResource("/GDS4794_full.soft").toURI());//hardcoded
 	        String name = sample1.getName(); 
-	        AlgorithmDrop.getItems().add("K-Means");
-	        VizDrop.getItems().add("Scatter Plot");
+	        AlgorithmDrop.getItems().addAll("K-Means","Hierarchical");
+	        VizDrop.getItems().addAll("Scatter Plot","Dendrogram");
 	        datasetMap.put(name, sample1);
 	    } catch (Exception e) {
 	        e.printStackTrace();
@@ -101,7 +101,7 @@ public class PickViewController {
 	    }
 	}
 	private void handleClusteringExecution() {
-	    if (!validateSelections()) return;
+	    if (!validateSelections()) return; 
 
 	    if (DimensionCheckBox.isSelected() && !isReduced) {
 	    	System.out.println("Running PCA reduction to 2D");
@@ -127,8 +127,8 @@ public class PickViewController {
 	    }
 
 	    String selectedAlgo = AlgorithmDrop.getValue();
-	    if (!"K-Means".equals(selectedAlgo)) {
-	        System.out.println("Only K-Means is supported right now.");
+	    if (!"K-Means".equals(selectedAlgo) && !"Hierarchical".equals(selectedAlgo)) {
+	        System.out.println("Only K-Means and Hierarchical are supported right now.");
 	        return false;
 	    }
 
@@ -136,25 +136,33 @@ public class PickViewController {
 	}
 	
 	private void runClustering() {
-		String selectedAlgo = AlgorithmDrop.getValue();
-	    if (!"K-Means".equals(selectedAlgo)) return;
+	    String selectedAlgo = AlgorithmDrop.getValue();
 
-	    // Show the config dialog
-	    KMeansConfigDialog dialog = new KMeansConfigDialog();
-	    Optional<KMeansConfig> configResult = dialog.showAndWait(stage);
+	    if ("K-Means".equals(selectedAlgo)) {
+	        // Show the config dialog
+	        KMeansConfigDialog dialog = new KMeansConfigDialog();
+	        Optional<KMeansConfig> configResult = dialog.showAndWait(stage);
 
-	    if (configResult.isPresent()) {
-	        KMeansConfig config = configResult.get(); // get k, maxIterations, distance
+	        if (configResult.isPresent()) {
+	            KMeansConfig config = configResult.get(); // get k, maxIterations, distance
 
-	        clusteringController.setClusteringStrategy(new KmeansClustering());
-	        result = clusteringController.runClustering(currentData, config.getK(), config.getDistance(), config.getMaxIterations());
-	        System.out.println("Clustering completed: \n" + result);
+	            clusteringController.setClusteringStrategy(new KmeansClustering());
+	            result = clusteringController.runClustering(currentData, config.getK(), config.getDistance(), config.getMaxIterations());
+	            System.out.println("K-Means Clustering completed: \n" + result);
+	        } else {
+	            System.out.println("K-Means configuration cancelled.");
+	        }
+
+	    } else if ("Hierarchical".equals(selectedAlgo)) {
+	        clusteringController.setClusteringStrategy(new HierarchicalClustering());
+	        result = clusteringController.runClustering(currentData, 0, new EucledianDistance(), 0); // k/maxIterations ignored
+	        System.out.println("Hierarchical Clustering completed: \n" + result);
+
 	    } else {
-	        System.out.println("K-Means configuration cancelled.");
+	        System.out.println("Unknown clustering algorithm selected.");
 	    }
-	    
 	}
-	
+
 	private void renderVisualization() {
         String selectedViz = VizDrop.getValue();
 
@@ -163,6 +171,15 @@ public class PickViewController {
             clusteringController.getClusterContext().addObserver(scatterPlotView);
             scatterPlotView.update(result);
             openViewInNewWindow(scatterPlotView, "Cluster Visualization - Scatter Plot");
+        }else if ("Dendrogram".equals(selectedViz)) {
+            if (result instanceof HierarchicalClusteredData) {
+            	 HierarchicalClusteredData dendroData = (HierarchicalClusteredData) result;
+                DendrogramView dendrogram = new DendrogramView();
+                dendrogram.displayClusters(dendroData);
+                openViewInNewWindow(dendrogram, "Cluster Visualization - Dendrogram");
+            } else {
+                System.out.println("Dendrogram can only be shown for hierarchical clustering.");
+            }
         }
     }
 	
@@ -173,7 +190,7 @@ public class PickViewController {
         vizStage.setScene(scene);
         vizStage.show();
     }
-	
+	 
 	
 	
 	
