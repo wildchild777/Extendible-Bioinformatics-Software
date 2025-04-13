@@ -35,7 +35,7 @@ public class PcaReducerTest {
     }
 	
 	
-	@Test
+	@Test 
 	void testPCAWithTwoDimensionalSpread() {
 	    List<Entry> entries = new ArrayList<>();
 	    entries.add(new Entry("Sample1", Map.of("Gene1", 1.0, "Gene2", 1.0)));
@@ -78,7 +78,8 @@ public class PcaReducerTest {
         // parse
         SoftParser parser = new SoftParser();
         ParsedData parsedData = parser.parse("src/main/resources/ParseTestFile.soft");
-        List<Entry> entries = parsedData.getEntries();
+        assertTrue(parsedData instanceof EntryBasedData);
+        List<Entry> entries = ((EntryBasedData) parsedData).getEntries();
 
         //PCA
         DimensionalityReducer reducer = new PcaReducer();

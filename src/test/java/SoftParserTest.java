@@ -14,6 +14,7 @@ class SoftParserTest {
 	@Test
 	void test() {
 		SoftParser soft = new SoftParser();
+		 assertNotNull(soft);
 	}
 	@Test
 	void can_read() {
@@ -46,12 +47,14 @@ class SoftParserTest {
 			SoftParser soft2 = new SoftParser();
 			//List<Entry> temp = new ArrayList();
 			ParsedData temp = soft.parse("src/main/resources/ParseTestFile.soft");
+			ParsedData temp2 = soft2.parse("src/main/resources/ParseTestFile.soft");
+			assertTrue(temp instanceof EntryBasedData && temp2 instanceof EntryBasedData);
 			assertNotNull(temp);
-			List<Entry> temp_entries= temp.getEntries();
+			List<Entry> temp_entries= ((EntryBasedData) temp).getEntries();
 			assertEquals(6,temp_entries.size());
 			//List<Entry> temp2= new ArrayList();
-			ParsedData temp2 = soft2.parse("src/main/resources/ParseTestFile.soft");
-			List<Entry> temp2_entries= temp2.getEntries();
+			 
+			List<Entry> temp2_entries= ((EntryBasedData) temp2).getEntries();
 			assertEquals(temp_entries.size(),temp2_entries.size(),"their sizes should be the same");
 			for(int i =0;i<temp_entries.size();i++) {
 				Entry tempEntry = temp_entries.get(i);

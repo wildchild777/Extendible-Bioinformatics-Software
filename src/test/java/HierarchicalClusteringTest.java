@@ -1,4 +1,7 @@
 import model.*;
+
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import java.util.*;
 
 import org.junit.jupiter.api.Test;
@@ -18,12 +21,14 @@ public class HierarchicalClusteringTest {
         entries.add(new Entry("Sample3", g3));
 
         ParsedData data = new GeneExpressionParsedData();
+        assertTrue(data instanceof EntryBasedData);
+        
         for (Entry e : entries) {
             ((GeneExpressionParsedData) data).add(e);
         }
 
         HierarchicalClustering hc = new HierarchicalClustering();
-        ClusteredData clustered = hc.fit(data, new EucledianDistance());
+        ClusteredData clustered = hc.fit(data, 0,new EucledianDistance(),0);
 
         System.out.println("=== Dendrogram ===");
         System.out.println(clustered);
@@ -39,7 +44,7 @@ public class HierarchicalClusteringTest {
         ClusterStrategy hc = new HierarchicalClustering();
         ClusteredData result = hc.fit(data, 0, new EucledianDistance(), 0);
 
-        System.out.println("=== Test: From SOFT File ===");
+        System.out.println("=== Test: From SOFT File ==="); 
         System.out.println(result);
     }
 }
