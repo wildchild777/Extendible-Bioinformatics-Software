@@ -29,7 +29,9 @@ public class HierarchicalClusteringTest {
         }
 
         HierarchicalClustering hc = new HierarchicalClustering();
-        ClusteredData clustered = hc.fit(data, 0,new EucledianDistance(),0);
+        Map<String, Object> config = new HashMap<>(); 
+        config.put("distance", new EucledianDistance()); 
+        ClusteredData clustered = hc.fit(data, config); 
 
         System.out.println("=== Dendrogram ===");
         System.out.println(clustered);
@@ -43,7 +45,9 @@ public class HierarchicalClusteringTest {
         ParsedData data = parserContext.executeParse(new File("src/main/resources/HierarchalTemp.soft"));
 
         ClusterStrategy hc = new HierarchicalClustering();
-        ClusteredData result = hc.fit(data, 0, new EucledianDistance(), 0);
+        Map<String, Object> config = new HashMap<>(); 
+        config.put("distance", new EucledianDistance()); 
+        ClusteredData result = hc.fit(data, config);
 
         System.out.println("=== Test: From SOFT File ==="); 
         System.out.println(result);

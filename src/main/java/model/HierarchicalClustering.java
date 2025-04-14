@@ -16,14 +16,15 @@ public class HierarchicalClustering implements ClusterStrategy {
  * pass it to local fit method 
  */
     @Override
-    public ClusteredData fit(ParsedData data, int k, Distance distance, int maxIterations) {
+    public ClusteredData fit(ParsedData data, Map<String, Object> config) {
     	 if (!(data instanceof EntryBasedData)) {
              throw new IllegalArgumentException("HierarchicalClustering supports only EntryBasedData.");
          }
+    	 Distance distance = (Distance) config.get("distance");
          return fit((EntryBasedData) data, distance);
      }
     
-
+    
     public ClusteredData fit(EntryBasedData data, Distance distance) {
         this.distanceMeasure = distance;
         List<Entry> entries = data.getEntries(); 
@@ -90,5 +91,17 @@ public class HierarchicalClustering implements ClusterStrategy {
             collectEntries(node.getLeft(), out);
             collectEntries(node.getRight(), out);
         }
+    }
+    
+    
+    /**
+     * Added getParameters method to expose the required configuration.
+     * For HierarchicalClustering we only require a "distance" parameter.
+     */
+    @Override
+    public Map<String, Object> getParameters() {
+        Map<String, Object> params = new HashMap<>();
+        params.put("distance", null);
+        return params; 
     }
 }
