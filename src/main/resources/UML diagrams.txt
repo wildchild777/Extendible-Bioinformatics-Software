@@ -780,4 +780,316 @@ rectangle "Model" as M {
 
 
 @enduml
+====latest verion===
+@startuml
+' Force layout with positioning
+scale 0.5
+rectangle "View" as V {
+    interface Observer {
+        +update(data: ClusteredData)
+    }
 
+    interface VisualizationView {
+        +displayClusters(data: ClusteredData)
+    }
+
+    class ScatterPlotView {
+        +displayClusters(data: ClusteredData)
+        +update(data: ClusteredData)
+    }
+class DendrogramView {
+        +displayClusters(data: ClusteredData)
+        +update(data: ClusteredData)
+-drawDendrogram(gc:GraphicsContext,node:ClusterNode,x:double,maxX:double) 
+-countLeaves(node : ClusterNode ) : int 
+-computeDepth(node : ClusterNode ) : int 
+-computeYPositions(node:ClusterNode)
+    }
+class PluginConfigDialog{
++PluginConfigDialog(parameterTemplate:Map<String, Object>)
+}
+    VisualizationView <|.. ScatterPlotView
+    Observer <|.. ScatterPlotView
+
+    class PickViewController {
+        - DimensionCheckBox: CheckBox
+        - datasetDrop: ComboBox
+        - AlgorithmDrop: ComboBox
+        - VizDrop: ComboBox
+        - stage: Stage
+        + handleDatasetSelection()
+        + handleClusteringExecution()
+-runClustering()
+-renderVisualization()
+-loadPlugin()
+    }
+}
+
+rectangle "Controller" as C {
+    class ClusteringController {
+        -parserContext: ParserContext
+        -clusterContext: ClusterContext
+-pluginManager : PluginManager 
+        +loadData(filename: String)
+        +runClustering(data: ParsedData, k: int, distance: Distance, maxIterations: int): ClusteredData
+        +setClusteringStrategy(strategy: ClusterStrategy)
+        +getClusterContext(): ClusterContext
++setPluginManager(pluginManager:PluginManager )
+getPluginManager(): PluginManager 
+runPluginClustering(data:ParsedData, pluginName : String , config:Map<String, Object>):ClusteredData 
+getClusterContext() : ClusterContext 
+    }
+}
+
+rectangle "Model" as M {
+    ' Layer 1: Entry & ParsedData types
+    class Entry {
+        -name: String 
+        -sample: Map<String, Double>
+        +Entry(name:String,sample:Map<String,Double>)
+        +getName(): String
+        +getGene(): Map<String, Double>
+        +toString():String
+    }
+
+    interface ParsedData {
+        +getEntries(): List<Entry>
+    }
+
+    class GeneExpressionParsedData {
+        -entry: List<Entry>
+        +getEntries(): List<Entry>
+        +addEntry(temp : Entry)
+        +getName() : List<String>
+        +getGene() : List<Map<String,Double>>
+        +getSpecificGene(sampleName : String) : Map<String,Double>
+    }
+
+    ' Layer 2: Parsing
+    interface ParserStrategy {
+        +parse(filename: String): ParsedData
+    }
+
+    class SoftParser {
+        -line: String
+        -header: String
+        -count: Int
+        -data: List<String[]>
+        -entries: List<Entry>
+        +parse(filename: String): ParsedData
+    }
+class CSVParser {
++parse(filename: String): ParsedData
+}
+interface EntryBasedData{
+ getEntries():List<Entry>
+}
+interface DimensionalityReducer {
+ reduce(entries : List<Entry> , targetDimensions : int ) : List<Entry>
+}
+    class ParserContext {
+        -strategy: ParserStrategy
+        +setParser(strategy: ParserStrategy)
+        +executeParse(filename: String): ParsedData
+    }
+
+    ' Layer 3: Clustering Core
+    interface ClusterStrategy {
+        +fit(data: ParsedData, config : Map<String, Object> ): ClusteredData
+        +getParameters() : Map<String, Object>   
+     +supports(data:ParsedData ) : boolean
+}
+interface ClusteringConfigDialog<T>{
++showAndWait(owner: Window) : Optional
+}
+
+class ClusterNode{
+-left: ClusteNode
+-right: ClusteNode
+-distance : double
+-entry : Entry
+
++getEntry() : Entry
++getRight(): ClusterNode
++getLeft() : ClusterNode
++getDistance() : Double
+}
+
+class HierarchicalClusteredData{
+-root : ClusterNode
++getRoot(): root
+
+}
+    class KMeansClustering {
+        -random:Random
+        +fit(data: ParsedData, config: Map<String, Object> ): ClusteredData
++getParameters() : Map<String, Object>  
++supports(data : ParsedData) : boolean
+        
+}
+    class HierarchicalClustering{
+        +fit(data: ParsedData, config: Map<String, Object> ): ClusteredData
++getParameters() : Map<String, Object>  
++supports(data : ParsedData) : boolean
+        
+}
+    class ClusterContext {
+        -strategy: ClusterStrategy
+        -observers: List<Observer>
+        -clusteredData: ClusteredData
+        +setClusterStrategy(strategy: ClusterStrategy)
+        +executeClustering(data: ParsedData, config : Map<String,Object>): ClusteredData
+        +addObserver(o: Observer)
+        +removeObserver(o: Observer)
+        +notifyObservers()
+    }
+interface PluginInterface{
+getDescription(): String
+getPluginType(): PluginType 
+getName(): String 
+}
+interface ParserPlugin{
+getSupportedFileExtension(): List<String> 
+getParsedDataType() : Class<? extends ParsedData>
+ getParameters() : Map<String, Object>
+requiresConfiguration() : boolean 
+getPluginType() : PluginType  
+}
+interface ClusteringPlugin{
+Supports(): boolean
+fit(data : ParsedData , config : Map<String, Object>) : ClusteredData
+requiresConfiguration() : boolean 
+supportedParsedType() : Class<? extends ParsedData>
+getParameters(): Map<String, Object>
+getPluginType() : PluginType  
+}
+interface VisualizationPlugin{
+getSupportedClusteredDataType(): Class<? extends ClusteredData> 
+createView(data:ClusteredData) : VisualizationView 
+requiresConfiguration() : boolean 
+getParameters(): Map<String, Object>
+getPluginType() : PluginType  
+}
+enum PluginType{
+	PARSER,
+    CLUSTERING,
+    VISUALIZATION
+}
+class PluginManager{
+- parserPlugins: List<ParserPlugin> 
+- clusteringPlugins: List<ClusteringPlugin> 
+- visualizationPlugins: List<VisualizationPlugin> 
++loadPlugins(pluginDirectoryPath : String)
+-loadPluginsFromJar(jarFile:File)
+-loadIfPlugin(cls:Class<?>)
+}
+
+
+    interface ClusteredData {}
+    class FlatClusteredData {
+        -clusters: Map<Centroids, List<Entry>>
+        +FlatClusteredData(clusters: Map<Centroids, List<Entry>>)
+        +getClusters(): Map<Centroids, List<Entry>>
+        +toString(): String
+    }
+
+    class Centroids {
+        -coordinates: Map<String, Double>
+        +getCoordinates(): Map<String, Double>
+        +Centroids(coordinates: Map<String, Double>)
+    }
+
+    ' Layer 4: Distance
+    interface Distance {
+        +calculate(vector1: Map<String, Double>, vector2: Map<String, Double>): double
+    }
+
+    class EuclideanDistance {
+        +calculate(p1: Map<String, Double>, p2: Map<String, Double>): double
+    }
+
+    ' Layer 5: Dimensionality Reduction
+    interface DimensionalityReducer {
+        +reduce(entries: List<Entry>, targetDimensions: int): List<Entry>
+    }
+
+    class PcaReducer {
+        -MAX_GENES: int
+        +reduce(entries: List<Entry>, targetDimensions: int): List<Entry>
+    }
+
+    ' Layer 6: Configuration
+    class KMeansConfig {
+        +k(): int
+        +maxIterations(): int
+        +distance(): Distance
+    }
+
+    interface ClusteringConfigDialog<T> {
+        +showAndWait(owner: Window): Optional<T>
+    }
+
+    class KMeansConfigDialog {
+        +showAndWait(owner: Window): Optional<KMeansConfig>
+    }
+
+    ' Relationships
+    ParserStrategy <|.. SoftParser : implements
+    ParserContext --> ParserStrategy : uses
+    ParserContext --> "1" ParsedData : returns
+    SoftParser --> ParsedData : returns
+    GeneExpressionParsedData ..|> ParsedData : implements
+    GeneExpressionParsedData --> Entry : contains
+GeneExpressionParsedData ..|> EntryBasedData : "implements"
+CSVParser ..|> ParserStrategy : implements
+CSVParser ..|> ParsedData : returns
+VisualizationView <|.. DendrogramView : implements
+Observer <|.. DendrogramView : implements
+
+    ClusterStrategy <|.. KMeansClustering : implements
+    ClusterContext --> ClusterStrategy : uses
+    KMeansClustering --> Centroids : uses
+    KMeansClustering --> Distance : uses
+    Distance <|.. EuclideanDistance
+    KMeansClustering --> ClusteredData : returns
+HierarchicalClustering --> ClusterNode : uses
+HierarchicalClustering --> HierarchicalClusteredData: uses
+HierarchicalClusteredData ..|> ClusteredData : implements
+HierarchicalClustering --> ClusteredData : returns
+ClusterStrategy <|.. HierarchicalClustering : implements
+    ClusterContext --> ParsedData : uses
+    ClusterContext --> ClusteredData : returns
+    ClusterContext --> Observer : notifies
+    ClusteredData <|.. FlatClusteredData
+' All plugin interfaces extend PluginInterface
+PluginInterface <|-- ParserPlugin : extends
+PluginInterface <|-- ClusteringPlugin : extends
+PluginInterface <|-- VisualizationPlugin : extends
+ParserPlugin ..> PluginConfigDialog : "getParameters() uses"
+ClusteringPlugin ..> PluginConfigDialog : "getParameters() uses"
+VisualizationPlugin ..> PluginConfigDialog : "getParameters() uses"
+
+PluginInterface ..> PluginType : returns
+
+PluginManager --> ParserPlugin : manages
+PluginManager --> ClusteringPlugin : manages
+PluginManager --> VisualizationPlugin : manages
+ParserPlugin ..> ParsedData : parse() returns
+ClusteringPlugin ..> ClusteredData : fit() returns
+VisualizationPlugin ..> VisualizationView : createView() returns
+ClusteringController --> ParserContext : uses
+ClusteringController --> ClusterContext : manages
+ClusteringController --> PluginManager : uses
+
+PickViewController --> ClusteringController : "calls/uses"
+
+    DimensionalityReducer <|.. PcaReducer : implements
+    PcaReducer --> Entry : reduces
+    PcaReducer ..> ParsedData : gets entries from
+
+    ClusteringConfigDialog <|.. KMeansConfigDialog
+    KMeansConfigDialog ---> KMeansConfig : uses
+    ClusteringController --> ParserContext : uses
+    ClusteringController --> ClusterContext : uses
+}
+@enduml
