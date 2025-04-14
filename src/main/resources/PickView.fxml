@@ -23,5 +23,7 @@
       <Button fx:id="executeConfig" layoutX="449.0" layoutY="312.0" mnemonicParsing="false" text="Run Config" />
       <Label layoutX="48.0" layoutY="237.0" text="Run dimentinality reducer?" />
       <CheckBox fx:id="DimensionCheckBox" layoutX="217.0" layoutY="237.0" mnemonicParsing="false" text="yes" />
+      <Label layoutX="48.0" layoutY="267.0" text="Load Plug-ins" />
+      <Button fx:id="loadPlugin" layoutX="132.0" layoutY="263.0" mnemonicParsing="false" onAction="#loadPlugin" text="yes" />
    </children>
 </AnchorPane>

@@ -9,7 +9,6 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 /**
  * This will be updated later to haev history so it will be run config instead of configure
- * for now only the config run works
  */
 public class ChoiceViewController {
 

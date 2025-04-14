@@ -1,7 +1,9 @@
 package plugin;
 
 import java.io.File;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import model.ParsedData;
 import model.ParserStrategy;
@@ -31,6 +33,10 @@ public interface ParserPlugin extends PluginInterface, ParserStrategy {
     @Override
     default PluginType getPluginType() {
         return PluginType.PARSER;
+    }
+    
+    default Map<String, Object> getParameters() {
+        return new HashMap<>();
     }
     
     /**

@@ -1,5 +1,7 @@
 package plugin;
 
+import java.util.Map;
+
 import model.ClusterStrategy;
 import model.ClusteredData;
 import model.Distance;
@@ -26,7 +28,7 @@ public interface ClusteringPlugin extends PluginInterface, ClusterStrategy {
      * @return ClusteredData result from the clustering operation.
      */
     @Override
-    ClusteredData fit(ParsedData data, int k, Distance distance, int maxIterations);
+    ClusteredData fit(ParsedData data,Map<String, Object> config);
 
     /**
      * Indicates if this algorithm requires user configuration before execution.

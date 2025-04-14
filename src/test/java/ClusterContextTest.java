@@ -2,6 +2,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -24,7 +25,11 @@ public class ClusterContextTest {
 		EucledianDistance length = new EucledianDistance();
 		ClusterContext cluster_context = new ClusterContext();
 		cluster_context.setClusterStrategy(new KmeansClustering());
-		ClusteredData result = cluster_context.executeClustering(holder,3,length,3);
+		Map<String, Object> config = new HashMap<>(); 
+        config.put("k", 3); 
+        config.put("distance", length); 
+        config.put("maxIterations", 3); 
+		ClusteredData result = cluster_context.executeClustering(holder,config);
 		assertNotNull(result);
 		Map<Centroids, List<Entry>> clusters = ((FlatClusteredData) result).getClusters();
 		for (Map.Entry<Centroids, List<Entry>> entry : clusters.entrySet()) {

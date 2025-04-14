@@ -2,7 +2,8 @@ package model;
 
 import java.util.List;
 /**
- * Supporting class to store data for hierarchal clustered data - this is important 
+ * Supporting class to store data for hierarchal clustered data - this is important since the class needs special
+ * storage support class
  */
 public class ClusterNode {
     private ClusterNode left;

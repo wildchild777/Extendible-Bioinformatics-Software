@@ -1,5 +1,8 @@
 package plugin;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import model.ClusteredData;
 import view.VisualizationView;
 
@@ -30,7 +33,10 @@ public interface VisualizationPlugin extends PluginInterface {
     default boolean requiresConfiguration() {
         return false;
     }
-
+    
+    default Map<String, Object> getParameters() {
+        return new HashMap<>();
+    }
     /**
      * Identifies this plugin as a visualizer.
      */

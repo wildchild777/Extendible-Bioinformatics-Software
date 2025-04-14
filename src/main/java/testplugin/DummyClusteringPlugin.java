@@ -1,5 +1,8 @@
 package testplugin;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import model.*;
 import plugin.ClusteringPlugin;
 
@@ -21,7 +24,7 @@ public class DummyClusteringPlugin implements ClusteringPlugin {
     }
 
     @Override
-    public ClusteredData fit(ParsedData data, int k, Distance distance, int maxIterations) {
+    public ClusteredData fit(ParsedData data, Map<String, Object> config) {
         System.out.println("Dummy clustering run on: " + data);
         return new FlatClusteredData(new java.util.HashMap<>()); // return empty cluster map
     }
@@ -29,6 +32,11 @@ public class DummyClusteringPlugin implements ClusteringPlugin {
     @Override
     public boolean requiresConfiguration() {
         return true;
+    }
+    @Override
+    public Map<String, Object> getParameters() {
+        Map<String, Object> params = new HashMap<>();
+        return params; 
     }
 
     @Override

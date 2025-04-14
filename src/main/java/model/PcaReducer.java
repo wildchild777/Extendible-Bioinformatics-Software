@@ -6,18 +6,19 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.math3.linear.*;
-
+/**
+ * This class is very important to reduce the dimension of our data, uses PCA(principal component analysis)
+ */
 public class PcaReducer implements DimensionalityReducer {
 	private static final int MAX_GENES = 500; // Limit to top 500 most variable genes
 	
     @Override
     public List<Entry> reduce(List<Entry> entries, int targetDimensions) {
-        if (entries == null || entries.isEmpty()) return new ArrayList<>();
+        if (entries == null || entries.isEmpty()) return new ArrayList<>();//sanity check
 
         // get all the the geneNames
         List<String> geneNames = new ArrayList<>(entries.get(0).getGene().keySet());
-        int originalDim = geneNames.size();
-        int nSamples = entries.size();
+        int nSamples = entries.size();//gets the sizes of the samples
 
         //data matrix where rows = samples columns = genes
         Map<String, Double> geneToVariance = new HashMap<>();
@@ -27,15 +28,15 @@ public class PcaReducer implements DimensionalityReducer {
             for (Entry e : entries) {
                 Double val = e.getGene().get(gene);
                 if (val != null) {
-                    mean += val;
-                    sqSum += val * val;
-                    validCount++;
+                    mean += val;//mean
+                    sqSum += val * val;//square sum
+                    validCount++;//valid samples
                 }
             }
             if (validCount > 0) {
                 mean /= validCount;
-                double variance = (sqSum / validCount) - (mean * mean);
-                geneToVariance.put(gene, variance);
+                double variance = (sqSum / validCount) - (mean * mean);//gets basic variance   
+                geneToVariance.put(gene, variance);//puts the variance into our list
             } else {
                 // If all values were null for a gene, skip it
                 System.err.println("Skipping gene due to all nulls: " + gene);
@@ -53,7 +54,7 @@ public class PcaReducer implements DimensionalityReducer {
             Map<String, Double> geneMap = entries.get(i).getGene();
             for (int j = 0; j < reducedDim; j++) {//changed here as well
             	 Double val = geneMap.get(geneNames.get(j));
-                 dataMatrix[i][j] = val != null ? val : 0.0;
+                 dataMatrix[i][j] = val != null ? val : 0.0;//sanity check for null values
             }
         }
 

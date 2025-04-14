@@ -23,11 +23,11 @@ public class ClusterContext {
 
 	    //Need to change this to take a ParsedData instance instead of List<Entry> etc
 	    //Need to change this so it returns a type of ClusterdData instead of Map<Centroids, List<Entry>>
-	    public ClusteredData executeClustering(ParsedData data, int k, Distance distance, int maxIterations) {
+	    public ClusteredData executeClustering(ParsedData data, Map<String, Object> config) {
 	        if (strategy == null) {
 	            throw new IllegalStateException("ClusterStrategy is not set.");
 	        }
-	        clusteredData = strategy.fit(data,k,distance,maxIterations);
+	        clusteredData = strategy.fit(data,config);
 	        notifyObservers();
 	        return clusteredData;
 	    }
