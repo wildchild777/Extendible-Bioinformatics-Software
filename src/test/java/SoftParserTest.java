@@ -1,5 +1,6 @@
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
@@ -19,23 +20,23 @@ class SoftParserTest {
 	@Test
 	void can_read() {
 		SoftParser soft = new SoftParser();
-		soft.parse("TestFile.soft");
+		soft.parse(new File("TestFile.soft"));
 	}
 	@Test
 	void filename_wrong() {
 		SoftParser soft = new SoftParser();
-		assertThrows(IllegalArgumentException.class,() -> soft.parse("TestFile.gg"));		
+		assertThrows(IllegalArgumentException.class,() -> soft.parse(new File("TestFile.gg")));		
 	}
 	@Test
 	void filename_right() {
 		SoftParser soft = new SoftParser();
-		soft.parse("TestFile.soft");		
+		soft.parse(new File("TestFile.soft"));		
 	}
 	@Test
 	void filename_not_present() {
 		try {
 		SoftParser soft = new SoftParser();
-		soft.parse("heg.soft");
+		soft.parse(new File("heg.soft"));
 		}catch(Exception e) {
 			assertNotNull(e);	
 		}
@@ -46,8 +47,8 @@ class SoftParserTest {
 			SoftParser soft = new SoftParser();
 			SoftParser soft2 = new SoftParser();
 			//List<Entry> temp = new ArrayList();
-			ParsedData temp = soft.parse("src/main/resources/ParseTestFile.soft");
-			ParsedData temp2 = soft2.parse("src/main/resources/ParseTestFile.soft");
+			ParsedData temp = soft.parse(new File("src/main/resources/ParseTestFile.soft"));
+			ParsedData temp2 = soft2.parse(new File("src/main/resources/ParseTestFile.soft"));
 			assertTrue(temp instanceof EntryBasedData && temp2 instanceof EntryBasedData);
 			assertNotNull(temp);
 			List<Entry> temp_entries= ((EntryBasedData) temp).getEntries();

@@ -13,15 +13,7 @@ public interface ParserPlugin extends PluginInterface, ParserStrategy {
      */
     List<String> getSupportedFileExtension();
 
-    /**
-     * Parse the given file and return the data in the internal ParsedData format.
-     *
-     * @param file The file to parse.
-     * @return ParsedData object containing the structured data.
-     * @throws Exception if parsing fails.
-     */
-    ParsedData parse(File file) throws Exception;
-    
+
     
     /**
      * Optionally indicate what type of ParsedData this parser returns (e.g., GeneExpressionParsedData).

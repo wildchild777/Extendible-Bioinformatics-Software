@@ -1,5 +1,6 @@
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -17,7 +18,7 @@ public class ClusterContextTest {
 	public void Setup() {
 		ParserContext context = new ParserContext();
 		context.setParser(new SoftParser());
-		ParsedData holder = context.executeParse("src/main/resources/KmeansTemp.soft");
+		ParsedData holder = context.executeParse(new File("src/main/resources/KmeansTemp.soft"));
 		assertNotNull(holder);
 		//System.out.println(holder);
 		EucledianDistance length = new EucledianDistance();

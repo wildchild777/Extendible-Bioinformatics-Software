@@ -1,6 +1,7 @@
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,7 +18,7 @@ public class ParserContextTest {
 	public void Setup() {
 		ParserContext context = new ParserContext();
 		context.setParser(new SoftParser());
-		ParsedData holder = context.executeParse("src/main/resources/ParseTestFile.soft");
+		ParsedData holder = context.executeParse(new File("src/main/resources/ParseTestFile.soft"));
 		assertNotNull(holder);
 		System.out.println(holder);
 	}

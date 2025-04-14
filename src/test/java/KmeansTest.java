@@ -1,6 +1,7 @@
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -17,7 +18,7 @@ public class KmeansTest {
 	@Test
 	void Entry_class_return() {
 		SoftParser parser = new SoftParser();
-		ParsedData temp = parser.parse("src/main/resources/ParseTestFile.soft");
+		ParsedData temp = parser.parse(new File("src/main/resources/ParseTestFile.soft"));
 		EucledianDistance length = new EucledianDistance();
 		KmeansClustering cluster = new KmeansClustering();
 		ClusteredData  f = cluster.fit(temp, 3, length, 3);
@@ -26,7 +27,7 @@ public class KmeansTest {
 	@Test
 	void predicted_return() {
 	SoftParser parser = new SoftParser();
-	ParsedData temp = parser.parse("src/main/resources/KmeansTemp.soft");
+	ParsedData temp = parser.parse(new File("src/main/resources/KmeansTemp.soft"));
 	EucledianDistance length = new EucledianDistance();
 	KmeansClustering cluster = new KmeansClustering();
 	
@@ -46,7 +47,7 @@ public class KmeansTest {
 	@Test 
 	void another_predicted() {
 		SoftParser parser = new SoftParser();
-		ParsedData temp = parser.parse("src/main/resources/KmeansTemp.soft");
+		ParsedData temp = parser.parse(new File("src/main/resources/KmeansTemp.soft"));
 		EucledianDistance length = new EucledianDistance();
 		
 		KmeansClustering cluster = new KmeansClustering();

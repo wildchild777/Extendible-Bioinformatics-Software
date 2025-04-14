@@ -2,6 +2,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -77,7 +78,7 @@ public class PcaReducerTest {
     void reduceSoftParsedGeneExpressionTo2D() {
         // parse
         SoftParser parser = new SoftParser();
-        ParsedData parsedData = parser.parse("src/main/resources/ParseTestFile.soft");
+        ParsedData parsedData = parser.parse(new File("src/main/resources/ParseTestFile.soft"));
         assertTrue(parsedData instanceof EntryBasedData);
         List<Entry> entries = ((EntryBasedData) parsedData).getEntries();
 

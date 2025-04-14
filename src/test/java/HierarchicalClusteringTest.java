@@ -2,6 +2,7 @@ import model.*;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.io.File;
 import java.util.*;
 
 import org.junit.jupiter.api.Test;
@@ -39,7 +40,7 @@ public class HierarchicalClusteringTest {
         ParserContext parserContext = new ParserContext();
         parserContext.setParser(new SoftParser());
 
-        ParsedData data = parserContext.executeParse("src/main/resources/HierarchalTemp.soft");
+        ParsedData data = parserContext.executeParse(new File("src/main/resources/HierarchalTemp.soft"));
 
         ClusterStrategy hc = new HierarchicalClustering();
         ClusteredData result = hc.fit(data, 0, new EucledianDistance(), 0);

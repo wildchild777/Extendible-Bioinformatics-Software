@@ -3,6 +3,7 @@ package model;
 
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
@@ -20,9 +21,9 @@ public class SoftParser implements ParserStrategy{
 	private List<String[]> data= new ArrayList<>();// this list stores a gene and it's expression vlaues.
 	private List<Entry> entries = new ArrayList<>();//possibly change it here - so that we make a list of ent
 	int invalidValueCount = 0;
-	public ParsedData parse(String filename) {
+	public ParsedData parse(File filename) {
 		 
-		if(!filename.endsWith(".soft")) {throw new IllegalArgumentException("Invalid file type: Expected a .soft file");}
+		if(!filename.getName().endsWith(".soft")) {throw new IllegalArgumentException("Invalid file type: Expected a .soft file");}
 		try {
 		BufferedReader br = new BufferedReader(new FileReader(filename));
 		while((header = br.readLine())!= null) {
@@ -93,7 +94,7 @@ public class SoftParser implements ParserStrategy{
 		
 		br.close();
 		} catch (FileNotFoundException e) {
-		System.out.println("File not found" + filename);
+		System.out.println("File not found" + filename.getName());
 		e.printStackTrace();
 	}catch( IOException e) {
 		System.out.println("Something went wrong");

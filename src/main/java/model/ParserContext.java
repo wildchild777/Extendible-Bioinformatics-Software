@@ -1,4 +1,5 @@
 package model;
+import java.io.File;
 import java.util.List;
 
 /**
@@ -21,7 +22,7 @@ public class ParserContext {
 	 * @param filename - the file we want to parse
 	 * @return - returns ParsedData which can be further used
 	 */
-	public ParsedData executeParse(String filename) {
+	public ParsedData executeParse(File filename) {
         if (strategy == null) {
             throw new IllegalStateException("ParserStrategy is not set.");
         }
