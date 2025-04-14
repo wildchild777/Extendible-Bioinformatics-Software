@@ -8,16 +8,21 @@ import java.util.Map;
  * different clustering alogrithms.
  */
 public interface ClusterStrategy {
-	/**
-	 * Every clustering algorithm needs to return a type of ClusteredData
-	 * it runs on parsed data and returns the findings by running the ML algorithm.
-	 * @return the list of centroids (centre point) of entries 
-	 * 
-	 * Now it returns any type of class as long as it adheres to ClusterdData
-	 * This was needed since different Clsuterign algorithms return different tpye of data structures
-	 */
-	// this needs to return a proper subclass of the interface of CLusteredData
-	ClusteredData fit(ParsedData entry, int k, Distance distance, int maxIterations);
+	 /**
+     * Clusters the parsed data using a dynamically provided configuration.
+     *
+     * @param data the parsed data to be clustered
+     * @param config a map containing configuration parameters
+     * @return a ClusteredData object representing the clustering result
+     */
+    ClusteredData fit(ParsedData data, Map<String, Object> config);
+    
+    /**
+     * Provides a map of required parameters along with their default values or null.
+     *
+     * @return a map with parameter names as keys and their default values or null as values
+     */
+    Map<String, Object> getParameters();
 	
 	 /**
      * Check if the clustering algorithm can handle the given ParsedData type.

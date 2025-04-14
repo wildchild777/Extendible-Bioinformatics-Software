@@ -21,7 +21,11 @@ public class KmeansTest {
 		ParsedData temp = parser.parse(new File("src/main/resources/ParseTestFile.soft"));
 		EucledianDistance length = new EucledianDistance();
 		KmeansClustering cluster = new KmeansClustering();
-		ClusteredData  f = cluster.fit(temp, 3, length, 3);
+		Map<String, Object> config = new HashMap<>(); 
+		config.put("k", 3); 
+		config.put("distance", length); 
+		config.put("maxIterations", 3); 
+		ClusteredData  f = cluster.fit(temp,config);
 		assertNotNull(f);
 	}
 	@Test
@@ -30,9 +34,13 @@ public class KmeansTest {
 	ParsedData temp = parser.parse(new File("src/main/resources/KmeansTemp.soft"));
 	EucledianDistance length = new EucledianDistance();
 	KmeansClustering cluster = new KmeansClustering();
+	Map<String, Object> config = new HashMap<>(); 
+	config.put("k", 3); 
+	config.put("distance", length); 
+	config.put("maxIterations", 3); 
 	
-	ClusteredData clusteredData = cluster.fit(temp, 3, length, 3);
-	 Map<Centroids, List<Entry>> f = ((FlatClusteredData) clusteredData).getClusters();
+	ClusteredData clusteredData = cluster.fit(temp,config);
+	Map<Centroids, List<Entry>> f = ((FlatClusteredData) clusteredData).getClusters();
 	Centroids centroid = f.keySet().iterator().next(); // Get the first centroid
     Map<String, Double> centroidMap = centroid.getCoordinates(); // Get the map
 
@@ -52,8 +60,12 @@ public class KmeansTest {
 		
 		KmeansClustering cluster = new KmeansClustering();
 		
+		Map<String, Object> config = new HashMap<>(); 
+		config.put("k", 3); 
+		config.put("distance", length); 
+		config.put("maxIterations", 3); 
 		for (int i = 0; i < 15; i++) { // Run 5 times to see where centroids converge
-			ClusteredData clusteredData = cluster.fit(temp, 3, length, 3);
+			ClusteredData clusteredData = cluster.fit(temp, config);
             Map<Centroids, List<Entry>> result = ((FlatClusteredData) clusteredData).getClusters();
 		    System.out.println("Run " + (i + 1) + " centroids: " + result.keySet());
 		}
@@ -78,7 +90,11 @@ public class KmeansTest {
 		    int maxIterations = 100;
 		    EucledianDistance length = new EucledianDistance();
 		    KmeansClustering clustering = new KmeansClustering();
-		    ClusteredData clusteredData = clustering.fit(parsedData, k, length, maxIterations);
+		    Map<String, Object> config = new HashMap<>(); 
+			config.put("k", 3); 
+			config.put("distance", length); 
+			config.put("maxIterations", 3); 
+		    ClusteredData clusteredData = clustering.fit(parsedData,config);
 	        Map<Centroids, List<Entry>> clusters = ((FlatClusteredData) clusteredData).getClusters();
 	        
 		    for (Map.Entry<Centroids, List<Entry>> cluster : clusters.entrySet()) {

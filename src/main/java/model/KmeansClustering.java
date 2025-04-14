@@ -213,6 +213,27 @@ public class KmeansClustering implements ClusterStrategy {
 	    return data instanceof EntryBasedData;
 	}
 	
+    /**
+     * Provides a map of required parameters along with their default values.
+     * Keys:
+     *    "k" - default is 3 clusters
+     *    "distance" - default is null (user must provide a Distance instance)
+     *    "maxIterations" - default is 100 iterations
+     *
+     * @return a map with parameter names and their default values or null
+     */
+    @Override
+    public Map<String, Object> getParameters() {
+        Map<String, Object> params = new HashMap<String, Object>();
+        // Set default number of clusters
+        params.put("k", 3);
+        // No default distance metric provided; should be set by the user
+        params.put("distance", null);
+        // Set default maximum number of iterations
+        params.put("maxIterations", 100);
+        return params;
+    }
+	
 	/**
 	 * 
 	 * @param entry the class we use for our gene expression that we parse
@@ -223,12 +244,16 @@ public class KmeansClustering implements ClusterStrategy {
 	 */
 	//need to change this so it returns a CusterdData
 	@Override
-	public ClusteredData fit (ParsedData data, int k, Distance distance, int maxIterations){
+	public ClusteredData fit (ParsedData data, Map<String, Object> config){
 		  if (!(data instanceof EntryBasedData)) {
 		        throw new IllegalArgumentException("KMeans only supports EntryBasedData.");
 		    }
 
 		List<Entry> entry = ((EntryBasedData) data).getEntries();
+		int k = (Integer) config.get("k");
+		int maxIterations = (Integer) config.get("maxIterations");
+		Distance distance = (Distance) config.get("distance");
+		
 		List<Centroids> centroids = randomCentroids(entry,k);
 		Map<Centroids, List<Entry>> clusters = new HashMap<>();
 		Map<Centroids, List<Entry>> lastState= new HashMap<>();  
