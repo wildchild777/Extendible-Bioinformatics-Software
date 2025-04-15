@@ -2,13 +2,13 @@ package model;
 
 import java.util.List;
 /**
- * Supporting class to store data for hierarchal clustered data - this is important since the class needs special
- * storage support class
+ * Supporting class to store data for hierarchal clustered data - it is a recursive data type used to store tree-like
+ * structure used by clustering algorithms like Hierarchal clustering
  */
 public class ClusterNode {
     private ClusterNode left;
     private ClusterNode right;
-    private double distance;
+    private double distance;//Numeric distance to get the difference or similarity of node based on this.
     private Entry entry; // Leaf node if this is not null
 
     public ClusterNode(Entry entry) {

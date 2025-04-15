@@ -1,5 +1,6 @@
 package plugin;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import model.ClusterStrategy;
@@ -37,6 +38,10 @@ public interface ClusteringPlugin extends PluginInterface, ClusterStrategy {
      */
     default boolean requiresConfiguration() {
         return false;
+    }
+    
+    default Map<String, Object> getParameters() {
+        return new HashMap<>();
     }
 
     /**

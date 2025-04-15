@@ -22,7 +22,7 @@ public class PcaReducer implements DimensionalityReducer {
 
         //data matrix where rows = samples columns = genes
         Map<String, Double> geneToVariance = new HashMap<>();
-        for (String gene : geneNames) {
+        for (String gene : geneNames) {//this is used to get the mean and variance of each gene which is used below.
             double mean = 0, sqSum = 0;
             int validCount = 0;
             for (Entry e : entries) {

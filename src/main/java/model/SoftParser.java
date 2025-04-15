@@ -1,4 +1,3 @@
-//Since a lot of gene expresion data is in Soft format - which is delimited by tabs i want to read and then store them in an array.
 package model;
 
 

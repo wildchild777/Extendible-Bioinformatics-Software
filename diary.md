@@ -74,4 +74,24 @@ Finished working on K means - assign, average and the other methods
 
 refactoring SoftPArser for a more apropriate data structure.
 
+==break=== 
+jan 18-30: project was revisited to improve redability, there were a lot of intilisation mistakes - which were then taken care of
 
+jan 31 - feb 6: Design of the JavaFx interface with prototyping, SOLID principles were visited to see if data persistence was possible
+
+feb 7 - feb 13: We wont be having data persistence since its not paramount, new UML ddesiging takes place, i have to look into introducting design patterns since the codebase needs to be modular.
+
+feb 13- feb 22 : New UML with strategy, and observer were created and had a meeting with supervisor discussing the same.
+
+feb 26- feb 28: old classes were brushed up, new unit tests for everything and addition of new classes(cluserting) to meet spec.
+
+march 4 - march 11: Ran into javaFx compatability issue, turns out my JavaFx files weren't compatible with Scenebuilder, the plugin used by eclipse wan't helped had to do a clean rebuild of everything, and redownload all the needed files, during this time i was working on the UI on a different package for this project but forgot to keep it tracked
+
+march 13- march 20: Extensive changes of UML and discussion with supervisor about the same, got the interface checked and got feedback, working on the same.
+
+march 24th- April 1: Working on Code, implementing design patterns for the needed Classes(clustering - view -parsings), a lot of refactoring as classes evolve.
+
+April 1 - April 11 : Started working on Final report submission alongside the code, code is slowing being generalsied with a lot of focus on plug-ins, design patterns
+
+April 11 - April: Final touches on Plug-in a lot of manual testing for JavaFx intergration. UML upgradation and first major release of software and lock down of the UML for the same, final report comes to an end and submission.
+ 
