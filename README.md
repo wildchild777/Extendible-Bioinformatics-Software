@@ -34,15 +34,13 @@ patterns, MVC for the UI):
 
 ```mermaid
 flowchart LR
-    UI["JavaFX UI<br/>(FXML views + Controllers)"] --> CTX
-    subgraph Core["Core (Strategy contexts)"]
-        CTX["ParserContext / ClusterContext"] --> PS["ParserStrategy<br/>(SOFT, CSV)"]
-        CTX --> CS["ClusterStrategy<br/>(K-Means, Hierarchical)"]
-        CS --> DIST["Distance<br/>(Euclidean)"]
-        PCA["PcaReducer"]
-    end
-    PM["PluginManager"] -.loads .jar plugins.-> Core
-    Core --> VIZ["Visualisations<br/>(ScatterPlotView, DendrogramView)"]
+    UI["JavaFX UI (FXML + Controllers)"] --> CTX["Strategy Contexts"]
+    CTX --> PS["ParserStrategy (SOFT, CSV)"]
+    CTX --> CS["ClusterStrategy (K-Means, Hierarchical)"]
+    CS --> DIST["Distance (Euclidean)"]
+    CTX --> PCA["PcaReducer (PCA)"]
+    PM["PluginManager"] -->|loads JAR plugins| CTX
+    CS --> VIZ["Visualisations (ScatterPlot, Dendrogram)"]
 ```
 
 **Design patterns used:**
