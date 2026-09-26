@@ -62,9 +62,9 @@ flowchart LR
 ## Getting started
 
 ### Prerequisites
-- JDK **17** _(confirm against your `pom.xml` / `.classpath` and adjust)_
+- JDK **17**
 - Maven 3.8+
-- JavaFX SDK _(if not resolved via Maven — set the version you used)_
+- JavaFX SDK
 
 ### Build
 ```bash
